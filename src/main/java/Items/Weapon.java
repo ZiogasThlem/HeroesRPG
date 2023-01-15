@@ -3,15 +3,16 @@ package Items;
 
 public class Weapon extends Item{
 
-    private final int weaponDamage;
+/* Weapon specific Fields */
     private final Slot slot = Slot.WEAPON;
+
+/* Constructor */
     public Weapon(String itemName, int levelRequired,int weaponDamage) {
-        super(itemName, levelRequired);
-        this.weaponDamage = weaponDamage;
+        super(itemName, levelRequired,weaponDamage);
     }
-    public int getWeaponDamage() {
-        return weaponDamage;
-    }
+
+
+    /* Overridden Getter for Weapon specific Slot */
     @Override
     public Slot getSlot() {
         return slot;

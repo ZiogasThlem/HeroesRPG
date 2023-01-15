@@ -8,10 +8,13 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) {
 
-//        Hero mage = new Mage("Archmage Kadgar");
+        Mage mage = new Mage("Archmage Kadgar");
 //        Hero warrior = new Warrior("Garrosh Hellscream");
 //        Hero ranger = new Ranger("Sylvanas Windrunner");
-//        Hero rogue = new Rogue("Valeera Sanguinar");
+        Hero rogue = new Rogue("Valeera Sanguinar");
+
+
+
 
     }
 }
