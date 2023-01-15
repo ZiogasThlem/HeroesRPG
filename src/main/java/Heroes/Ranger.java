@@ -1,20 +1,46 @@
 package Heroes;
 
-import Items.Item;
-import Items.Slot;
+import Items.*;
 
 import java.util.HashMap;
 
 public class Ranger extends Hero{
 
-    private final String validArmor = "Mail"; //to be modified to have enum values
-    private final String[] validWeapon = {"Bow"};
-    private HeroAttributes levelAttributes = new HeroAttributes(1,7,1);
-    private final int lvl_strn = 1, lvl_dextr = 5 , lvl_intl = 1;
-    private int heroLevel = 1;
-    private HashMap<Slot, Item> equipment = new HashMap<>();
+    private final ArmorType validArmor = ArmorType.MAIL;
+    private final WeaponType[] validWeapon = {WeaponType.BOW};
+
+    private final HeroAttributes levelAttributes = new HeroAttributes(1,7,1);
+
     public Ranger(String heroName) {
         super(heroName);
+    }
+
+
+    @Override
+    public ArmorType getValidArmor() {
+        return validArmor;
+    }
+
+    @Override
+    public String getLevelAttributes() {
+        return levelAttributes.getHeroAttributes();
+    }
+
+    @Override
+    public WeaponType[] getValidWeapon() {
+        return validWeapon;
+    }
+    @Override
+    public HashMap<Slot, Item> getHeroEquipment() {
+        return HeroEquipment;
+    }
+
+
+    public void levelUp() {
+        super.setHeroLevel(heroLevel);
+        levelAttributes.setStrength(1);
+        levelAttributes.setDexterity(5);
+        levelAttributes.setIntelligence(1);
     }
 
 }

@@ -1,9 +1,9 @@
 package Heroes;
-
 public class HeroAttributes{
 
     private int strength,dexterity,intelligence;
 
+    public HeroAttributes() {}
 
     public HeroAttributes(int strength, int dexterity, int intelligence) {
         this.strength = strength;
@@ -14,7 +14,6 @@ public class HeroAttributes{
     public int getStrength() {
         return strength;
     }
-
     public int getDexterity() {
         return dexterity;
     }
@@ -22,18 +21,24 @@ public class HeroAttributes{
         return intelligence;
     }
 
+    public String getHeroAttributes(){
+        return "Strength: "+ getStrength() +
+                "\nDexterity: "+ getDexterity()+
+                "\nIntelligence: "+ getIntelligence();
+        //make this format string
+    }
+
 //    to be modified to have extra parameter to add specific amount for each class
-//    public void setStrength(int strength) {
-//        this.strength = strength;
-//    }
-//
-//    public void setDexterity(int dexterity) {
-//        this.dexterity = dexterity;
-//    }
-//
-//    public void setIntelligence(int intelligence) {
-//        this.intelligence = intelligence;
-//    }
+
+    public void setStrength(int strength) {
+        this.strength += strength;
+    }
+    public void setDexterity(int dexterity) {
+        this.dexterity += dexterity;
+    }
+    public void setIntelligence(int intelligence) {
+        this.intelligence += intelligence;
+    }
 
 
 }

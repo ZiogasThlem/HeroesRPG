@@ -1,21 +1,17 @@
-import Heroes.Mage;
-import Heroes.Ranger;
-import Heroes.Rogue;
-import Heroes.Warrior;
+import Heroes.*;
+import Items.*;
+
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
 
-        Mage mage = new Mage("Archmage Kadgar");
-        Warrior warrior = new Warrior("Garrosh Hellscream");
-        Ranger ranger = new Ranger("Sylvanas Windrunner");
-        Rogue rogue = new Rogue("Valeera Sanguinar");
-
-        Class a = mage.getClass();
-        System.out.println(a.getSimpleName());
-
-
+//        Hero mage = new Mage("Archmage Kadgar");
+//        Hero warrior = new Warrior("Garrosh Hellscream");
+//        Hero ranger = new Ranger("Sylvanas Windrunner");
+//        Hero rogue = new Rogue("Valeera Sanguinar");
 
     }
 }

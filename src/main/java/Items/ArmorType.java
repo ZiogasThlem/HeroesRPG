@@ -4,5 +4,5 @@ public enum ArmorType {
     CLOTH,
     LEATHER,
     MAIL,
-    PLAIT
+    PLATE
 }
