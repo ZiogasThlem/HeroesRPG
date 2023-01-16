@@ -2,6 +2,7 @@ package Heroes;
 
 import Items.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Warrior extends Hero{
@@ -9,7 +10,15 @@ public class Warrior extends Hero{
 
 /* Overridden Fields with specified values */
     private final ArmorType validArmor = ArmorType.PLATE;
-    private final WeaponType[] validWeapon = {WeaponType.HAMMER,WeaponType.SWORD,WeaponType.AXE};
+    private final ArrayList<WeaponType> validWeapon;
+    {
+        validWeapon = new ArrayList<>();
+        validWeapon.add(WeaponType.AXE);
+        validWeapon.add(WeaponType.SWORD);
+        validWeapon.add(WeaponType.HAMMER);
+    }
+
+
     private final HeroAttributes levelAttributes = new HeroAttributes(5,2,1);
 /* Overridden Fields End */
 
@@ -28,8 +37,10 @@ public class Warrior extends Hero{
         levelAttributes.setDexterity(2);
         levelAttributes.setIntelligence(1);
 
-        System.out.printf("Congrats! You leveled up!" +
-                "\nYou are now level %d",getHeroLevel());
+        System.out.printf("""
+                Congrats! You leveled up!
+                You are now level %d
+                """,getHeroLevel());
     }
 
     @Override
@@ -38,12 +49,12 @@ public class Warrior extends Hero{
     }
 
     @Override
-    public String getLevelAttributes() {
-        return levelAttributes.getHeroAttributes();
+    public String getLevelAttributesString() {
+        return levelAttributes.getHeroAttributesString();
     }
 
     @Override
-    public WeaponType[] getValidWeapon() {
+    public ArrayList<WeaponType> getValidWeapon() {
         return validWeapon;
     }
     @Override

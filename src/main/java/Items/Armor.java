@@ -9,17 +9,14 @@ public class Armor extends Item{
 
 
 /* Constructor */
-    public Armor(String itemName, int levelRequired, Slot slot,HeroAttributes armorAttributes) {
-        super(itemName, levelRequired, slot);
+    public Armor(String itemName, int levelRequired, Slot slot,
+                 HeroAttributes armorAttributes,ArmorType armorType) {
+        super(itemName, levelRequired, slot, armorType);
         this.armorAttributes = armorAttributes;
+        //add armor type
     }
-
 
 /* Setters and Getters */
-
-    public String getArmorAttributes() {
-        return armorAttributes.getHeroAttributes();
-    }
 
     @Override
     public int getStrength() {

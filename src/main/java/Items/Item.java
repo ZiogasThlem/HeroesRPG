@@ -3,8 +3,7 @@ package Items;
 import Heroes.HeroAttributes;
 
 public abstract class Item {
-
-/* Item Fields */
+    /* Item Fields */
 
     /* Field for Item's name. */
     protected String itemName;
@@ -22,16 +21,19 @@ public abstract class Item {
 
     /* Field for Item's Slot. */
     protected Slot slot;
+    protected ArmorType armorType;
 
-/* Item Fields End */
+    /* Item Fields End */
 
 /* Constructors */
 
     /* Armor subclass Constructor */
-    public Item(String itemName, int itemLevel, Slot slot) {
+    public Item(String itemName, int itemLevel, Slot slot, ArmorType armorType) {
         this.itemName = itemName;
         this.itemLevel = itemLevel;
         this.slot = slot;
+        this.armorType = armorType;
+
     }
 
     /* Weapon subclass Constructor */
@@ -56,7 +58,7 @@ public abstract class Item {
     /* Getter to return Item's Slot.
     Specific for Weapon subclass.*/
     public Slot getSlot() {
-        return this.slot;
+        return slot;
     }
 
     /* Getter to return Item's Strength
@@ -82,4 +84,7 @@ public abstract class Item {
     public int getWeaponDamage(){
         return weaponDamage;}
 
+    public ArmorType getArmorType() {
+        return armorType;
+    }
 }

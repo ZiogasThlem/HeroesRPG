@@ -1,6 +1,8 @@
 package Heroes;
 
 import Items.*;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /*
@@ -12,7 +14,13 @@ public class Mage extends Hero{
 
 /* Overridden Fields with specified values */
     private final ArmorType validArmor = ArmorType.CLOTH;
-    private final WeaponType[] validWeapon = {WeaponType.STAFF,WeaponType.WAND};
+    private final ArrayList<WeaponType> validWeapon;
+    {
+        validWeapon = new ArrayList<>();
+        validWeapon.add(WeaponType.STAFF);
+        validWeapon.add(WeaponType.WAND);
+
+    }
     private final HeroAttributes levelAttributes = new HeroAttributes(1,1,8);
 /* Overridden Fields End */
 
@@ -27,13 +35,15 @@ public class Mage extends Hero{
 
     public void levelUp() {
 
-        super.setHeroLevel(heroLevel);
+        super.setHeroLevel(1);
         levelAttributes.setStrength(1);
         levelAttributes.setDexterity(1);
         levelAttributes.setIntelligence(5);
 
-        System.out.printf("Congrats! You leveled up!" +
-                "\nYou are now level %d",getHeroLevel());
+        System.out.printf("""
+                Congrats! You leveled up!
+                You are now level %d
+                """,getHeroLevel());
     }
 
 
@@ -42,13 +52,26 @@ public class Mage extends Hero{
         return validArmor;
     }
 
+
     @Override
-    public String getLevelAttributes() {
-        return levelAttributes.getHeroAttributes();
+    public String getLevelAttributesString() {
+        return levelAttributes.getHeroAttributesString();
     }
 
     @Override
-    public WeaponType[] getValidWeapon() {
+    public HeroAttributes getLevelAttributes() {
+        return levelAttributes;
+    }
+
+    @Override
+    public String totalHeroAttributes() {
+        return "Strength: " + getLevelAttributes().getStrength() +
+                "\nDexterity: " + getLevelAttributes().getDexterity() +
+                "\nIntelligence: " + getLevelAttributes().getIntelligence();
+    }
+
+    @Override
+    public ArrayList<WeaponType> getValidWeapon() {
         return validWeapon;
     }
 
@@ -56,7 +79,9 @@ public class Mage extends Hero{
     public HashMap<Slot, Item> getHeroEquipment() {
         return heroEquipment;
     }
+
 /* Overridden Methods End*/
+
 
 }
 

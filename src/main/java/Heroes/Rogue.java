@@ -2,6 +2,7 @@ package Heroes;
 
 import Items.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Rogue extends Hero{
@@ -9,7 +10,12 @@ public class Rogue extends Hero{
 
 /* Overridden Fields with specified values */
     private final ArmorType validArmor = ArmorType.LEATHER;
-    private final WeaponType[] validWeapon = {WeaponType.DAGGER,WeaponType.SWORD};
+    private final ArrayList<WeaponType> validWeapon;
+    {
+        validWeapon = new ArrayList<>();
+        validWeapon.add(WeaponType.DAGGER);
+        validWeapon.add(WeaponType.SWORD);
+    }
     private final HeroAttributes levelAttributes = new HeroAttributes(2,6,1);
 /* Overridden Fields End */
 
@@ -28,8 +34,10 @@ public class Rogue extends Hero{
         levelAttributes.setDexterity(4);
         levelAttributes.setIntelligence(1);
 
-        System.out.printf("Congrats! You leveled up!" +
-                "\nYou are now level %d",getHeroLevel());
+        System.out.printf("""
+                Congrats! You leveled up!
+                You are now level %d
+                """,getHeroLevel());
     }
 
 
@@ -39,12 +47,12 @@ public class Rogue extends Hero{
     }
 
     @Override
-    public String getLevelAttributes() {
-        return levelAttributes.getHeroAttributes();
+    public String getLevelAttributesString() {
+        return levelAttributes.getHeroAttributesString();
     }
 
     @Override
-    public WeaponType[] getValidWeapon() {
+    public ArrayList<WeaponType> getValidWeapon() {
         return validWeapon;
     }
     @Override

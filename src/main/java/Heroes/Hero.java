@@ -3,6 +3,8 @@ package Heroes;
 import Exceptions.*;
 import Items.*;
 import java.util.HashMap;
+import java.util.ArrayList;
+
 
 public abstract class Hero {
 
@@ -23,6 +25,7 @@ public abstract class Hero {
        and starting value of each Item is null. */
     protected HashMap<Slot, Item> heroEquipment;
     {
+
         heroEquipment = new HashMap<>();
         heroEquipment.put(Slot.HEAD, null);
         heroEquipment.put(Slot.BODY, null);
@@ -38,7 +41,7 @@ public abstract class Hero {
     /* Field to display which type of weapons a Hero is able
      to equip. Using String Array as many Hero subclasses
      can equip multiple types of weapons*/
-    protected WeaponType[] validWeapon;
+    protected ArrayList<WeaponType> validWeapon;
 
     /*
     Getting Class name from a "Class" class object
@@ -68,39 +71,51 @@ public abstract class Hero {
     public void equipItem(Armor armor) throws InvalidArmorException {
 
         /*
-        Checking if Hero's level is equal or greater than that
-        of the Armor. If it is, the Hero may equip this item
-         */
-        if (heroLevel >= armor.getItemLevel()) {
-            heroEquipment.put(armor.getSlot(), armor);
+        Checking if Hero's level is lower than that
+        of the Armor, and if the Hero can equip armor of this type.
+        If not, an exception is throw to inform the user that
+        his Hero's level is too low to equip this piece of armor */
+        if (getValidArmor() != armor.getArmorType()) {
+            throw new InvalidArmorException("Your cannot equip armor of " + armor.getArmorType()+ " .");
         }
-        /* If not, an exception is throw to inform the user that
-        his Hero's level is too low to equip this item */
-        else {
+        else if (getHeroLevel() < armor.getItemLevel()) {
             throw new InvalidArmorException("Your level is too low. You need to be "
-                    + "at least" + (armor.getItemLevel() + " level to be " +
-                    "able to equip " + armor.getItemName()));
+                    + "at least " + armor.getItemLevel() +  " level to be " +
+                    "able to equip " + armor.getItemName());
+        }
+        /* If not, the Hero may equip the piece of armor */
+        else {
+            getHeroEquipment().put(armor.getSlot(), armor);
+            System.out.println("Equipped "+ armor.getItemName());
+            totalAttributeCalculation();
         }
 
     }
-
-    /* "Equip" method used for when a Hero needs to equip a  weapon*/
+    /* "Equip" method used for when a Hero needs to equip a weapon*/
     public void equipItem(Weapon weapon) throws InvalidWeaponException {
 
         /*
-        Checking if Hero's level is equal or greater than that
-        of the Weapon. If it is, the Hero may equip this item
-         */
-        if (heroLevel >= weapon.getItemLevel()) {
-            heroEquipment.put(Slot.WEAPON, weapon);
+        Checking if Hero's level is lower than that
+        of the Weapon, and if the Hero can equip weapons of this type
+        If one of them is true, an exception is throw to inform the user that
+        his Hero's level is too low to equip this weapon */
+        if (!getValidWeapon().contains(weapon.getWeaponType()))
+        {
+            throw new InvalidWeaponException("Your cannot equip of "
+                    + weapon.getWeaponType()+ " type.");
         }
-       /* If not, an exception is throw to inform the user that
-        his Hero's level is too low to equip this item */
-        else {
+        else if (getHeroLevel() < weapon.getItemLevel()) {
             throw new InvalidWeaponException("Your level is too low. You need to be "
-                    + "at least" + (weapon.getItemLevel() + " level to be " +
-                    "able to equip " + weapon.getItemName()));
+                    + "at least" + weapon.getItemLevel() + " level to be " +
+                    "able to equip " + weapon.getItemName());
+            }
+        /* If not, Hero may equip the weapon */
+        else {
+            getHeroEquipment().put(Slot.WEAPON, weapon);
+            System.out.println("Equipped "+ weapon.getItemName());
+            totalAttributeCalculation();
         }
+
 
     }
 
@@ -110,31 +125,67 @@ public abstract class Hero {
     of equipment ,excluding weapons as they have none. Storing
     them into variables as they are required for multiple methods.
     */
-    int totalStrength = levelAttributes.getStrength() + heroEquipment.get(Slot.HEAD).getStrength() +
-            heroEquipment.get(Slot.BODY).getStrength() + heroEquipment.get(Slot.LEGS).getStrength();
-    int totalDexterity = levelAttributes.getDexterity() + heroEquipment.get(Slot.HEAD).getDexterity() +
-            heroEquipment.get(Slot.BODY).getDexterity() + heroEquipment.get(Slot.LEGS).getDexterity();
 
-    int totalIntelligence = levelAttributes.getIntelligence() + heroEquipment.get(Slot.HEAD).getIntelligence() +
-            heroEquipment.get(Slot.BODY).getIntelligence() + heroEquipment.get(Slot.LEGS).getIntelligence();
+
+    //bugged
+
+
+    public void totalAttributeCalculation(){
+
+        try {
+            levelAttributes.setStrength(getLevelAttributes().getStrength(), getHeroEquipment().get(Slot.HEAD).getStrength(),
+                    getHeroEquipment().get(Slot.BODY).getStrength(), getHeroEquipment().get(Slot.LEGS).getStrength());
+
+        } catch (NullPointerException ignored) {
+        }
+        try {
+            levelAttributes.setDexterity(getLevelAttributes().getDexterity(),getHeroEquipment().get(Slot.HEAD).getDexterity()
+                    ,getHeroEquipment().get(Slot.BODY).getDexterity(), getHeroEquipment().get(Slot.LEGS).getDexterity());
+
+        } catch (NullPointerException ignored) {
+        }
+        try {
+            levelAttributes.setIntelligence(getLevelAttributes().getIntelligence(), getHeroEquipment().get(Slot.HEAD).getIntelligence(),
+                    getHeroEquipment().get(Slot.BODY).getIntelligence(), getHeroEquipment().get(Slot.LEGS).getIntelligence());
+
+        } catch (NullPointerException ignored) {
+        }
+
+    }
+
+    //bugged//
+
+
 
     /*Returning the value of the total of each Hero Attribute.*/
     public String totalHeroAttributes() {
 
-        return "Strength: " + totalStrength + "\nDexterity: " +
-                totalDexterity + "\nIntelligence: " + totalIntelligence;
+        return "Strength: " + getLevelAttributes().getStrength() +
+                "\nDexterity: " + getLevelAttributes().getDexterity() +
+                "\nIntelligence: " + getLevelAttributes().getIntelligence();
 
     }
 
     /* Calculating the damage a Hero does */
-    public double damage(){
+    public double damage() {
 
         /* Getting a Hero's primary attribute by using the Math.max() method */
-        int primary = Math.max(Math.max(totalStrength, totalDexterity),totalIntelligence);
+        int primary = Math.max(Math.max(getLevelAttributes().getStrength(),
+                getLevelAttributes().getDexterity()), getLevelAttributes().getIntelligence());
+
 
         /* Accessing the weapon's damage from the respective Slot
         and calculating the damage with the given equation*/
-        return heroEquipment.get(Slot.WEAPON).getWeaponDamage() * (1 + primary/100.0);
+        double totalDamage = (1 + primary / 100.0);
+
+
+        try {
+            totalDamage *= getHeroEquipment().get(Slot.WEAPON).getWeaponDamage();
+        } catch (NullPointerException exception) {
+            exception.printStackTrace();
+        }
+        return totalDamage;
+
 
     }
 
@@ -149,9 +200,9 @@ public abstract class Hero {
                         Total Strength: %d
                         Total Dexterity: %d
                         Total Intelligence: %d
-                        Damage %f""", heroName,
-                className, heroLevel, totalStrength, totalDexterity,
-                totalIntelligence, damage());
+                        Damage %f""", getHeroName(),
+                getClassName(), getHeroLevel(), getLevelAttributes().getStrength(), getLevelAttributes().getDexterity(),
+                getLevelAttributes().getIntelligence(), damage());
 
       }
 
@@ -166,7 +217,7 @@ public abstract class Hero {
 
     /* Setter to increase Hero's Level by one */
     public void setHeroLevel(int heroLevel) {
-        this.heroLevel += heroLevel;
+        this.heroLevel = heroLevel;
     }
 
     /* Getter to return Hero's Level */
@@ -176,8 +227,8 @@ public abstract class Hero {
 
     /* Getter to return Hero's current Attributes
     Overridden in each subclass*/
-    public String getLevelAttributes() {
-        return levelAttributes.getHeroAttributes();
+    public String getLevelAttributesString() {
+        return levelAttributes.getHeroAttributesString();
     }
 
     /* Getter to return a HashMap of Slot,Item
@@ -194,13 +245,17 @@ public abstract class Hero {
 
     /* Getter to return Hero's valid Weapon
     type(s). Overridden in each subclass. */
-    public WeaponType[] getValidWeapon() {
+    public ArrayList<WeaponType> getValidWeapon() {
         return validWeapon;
     }
 
     /* Getter to return Hero's class's name */
     public String getClassName() {
         return className;
+    }
+
+    public HeroAttributes getLevelAttributes(){
+        return levelAttributes;
     }
 
 /*Getters and Setters End*/

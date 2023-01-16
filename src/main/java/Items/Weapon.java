@@ -6,9 +6,12 @@ public class Weapon extends Item{
 /* Weapon specific Fields */
     private final Slot slot = Slot.WEAPON;
 
+    private final WeaponType weaponType;
+
 /* Constructor */
-    public Weapon(String itemName, int levelRequired,int weaponDamage) {
-        super(itemName, levelRequired,weaponDamage);
+    public Weapon(String itemName, int levelRequired,int weaponDamage, WeaponType weaponType) {
+        super(itemName, levelRequired, weaponDamage);
+        this.weaponType = weaponType;
     }
 
 
@@ -16,5 +19,9 @@ public class Weapon extends Item{
     @Override
     public Slot getSlot() {
         return slot;
+    }
+
+    public WeaponType getWeaponType() {
+        return weaponType;
     }
 }
