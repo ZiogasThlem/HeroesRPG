@@ -1,26 +1,24 @@
 package Heroes;
 
+import Exceptions.InvalidArmorException;
 import Items.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/*
- mage class details
-*/
-
 public class Mage extends Hero{
 
 
 /* Overridden Fields with specified values */
+
     private final ArmorType validArmor = ArmorType.CLOTH;
     private final ArrayList<WeaponType> validWeapon;
     {
         validWeapon = new ArrayList<>();
         validWeapon.add(WeaponType.STAFF);
         validWeapon.add(WeaponType.WAND);
-
     }
+
     private final HeroAttributes levelAttributes = new HeroAttributes(1,1,8);
 /* Overridden Fields End */
 
@@ -36,9 +34,9 @@ public class Mage extends Hero{
     public void levelUp() {
 
         super.setHeroLevel(1);
-        levelAttributes.setStrength(1);
-        levelAttributes.setDexterity(1);
-        levelAttributes.setIntelligence(5);
+        getLevelAttributes().setStrength(1);
+        getLevelAttributes().setDexterity(1);
+        getLevelAttributes().setIntelligence(5);
 
         System.out.printf("""
                 Congrats! You leveled up!
@@ -54,17 +52,13 @@ public class Mage extends Hero{
 
 
     @Override
-    public String getLevelAttributesString() {
-        return levelAttributes.getHeroAttributesString();
-    }
-
-    @Override
     public HeroAttributes getLevelAttributes() {
         return levelAttributes;
     }
 
     @Override
     public String totalHeroAttributes() {
+
         return "Strength: " + getLevelAttributes().getStrength() +
                 "\nDexterity: " + getLevelAttributes().getDexterity() +
                 "\nIntelligence: " + getLevelAttributes().getIntelligence();
@@ -79,9 +73,33 @@ public class Mage extends Hero{
     public HashMap<Slot, Item> getHeroEquipment() {
         return heroEquipment;
     }
+    @Override
+    public void equipItem(Armor armor) throws InvalidArmorException {
 
-/* Overridden Methods End*/
+        /*
+        Checking if Hero's level is lower than that
+        of the Armor, and if the Hero can equip armor of this type.
+        If not, an exception is throw to inform the user that
+        his Hero's level is too low to equip this piece of armor */
+        if (getValidArmor() != armor.getArmorType()) {
+            throw new InvalidArmorException("Your cannot equip armor of " + armor.getArmorType()+ " .");
+        }
+        else if (getHeroLevel() < armor.getItemLevel()) {
+            throw new InvalidArmorException("Your level is too low. You need to be "
+                    + "at least " + armor.getItemLevel() +  " level to be " +
+                    "able to equip " + armor.getItemName());
+        }
+        /* If not, the Hero may equip the piece of armor */
+        else {
+            getHeroEquipment().put(armor.getSlot(), armor);
+            System.out.println("Equipped "+ armor.getItemName());
+            levelAttributes.setStrength(getHeroEquipment().get(armor.getSlot()).getStrength());
+            levelAttributes.setDexterity(getHeroEquipment().get(armor.getSlot()).getDexterity());
+            levelAttributes.setIntelligence(getHeroEquipment().get(armor.getSlot()).getIntelligence());
+        }
 
+    }
 
+    /* Overridden Methods End*/
 }
 

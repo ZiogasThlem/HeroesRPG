@@ -21,6 +21,11 @@ public class Weapon extends Item{
         return slot;
     }
 
+    @Override
+    public int getWeaponDamage() {
+        return weaponDamage;
+    }
+
     public WeaponType getWeaponType() {
         return weaponType;
     }

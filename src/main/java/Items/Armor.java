@@ -19,6 +19,11 @@ public class Armor extends Item{
 /* Setters and Getters */
 
     @Override
+    public HeroAttributes getArmorAttributes() {
+        return armorAttributes;
+    }
+
+    @Override
     public int getStrength() {
         return armorAttributes.getStrength();
     }

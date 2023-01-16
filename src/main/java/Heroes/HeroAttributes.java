@@ -17,9 +17,9 @@ public class HeroAttributes{
 
     /* Default Constructor with no
     arguments for parent class */
-    public HeroAttributes() {
-
-    }
+//    public HeroAttributes() {
+//
+//    }
 
     /* Constructor with all Hero
     Attributes for subclasses */
@@ -49,33 +49,23 @@ public class HeroAttributes{
     }
 
     /* Getter to return all three
-    Attributes in a formatted String.  */
-    public String getHeroAttributesString(){
-
-        return "Strength: "+ getStrength() +
-                "\nDexterity: "+ getDexterity()+
-                "\nIntelligence: "+ getIntelligence();
-    }
-
+    Attributes in a String.  */
 
 
     /* Setter to increase Strength Attribute */
-    public void setStrength(int strength, int ... ints) {
-        this.strength = strength + Arrays.stream(ints).sum();
+    public void setStrength(int strength) {
+        this.strength += strength;
     }
 
     /* Setter to increase Dexterity Attribute */
-    public void setDexterity(int dexterity, int ... ints) {
-        this.dexterity = dexterity + Arrays.stream(ints).sum();
+    public void setDexterity(int dexterity) {
+        this.dexterity += dexterity;
     }
 
     /* Setter to increase Intelligence Attribute */
-    public void setIntelligence(int intelligence, int ... ints) {
-        this.intelligence = intelligence + Arrays.stream(ints).sum();
+    public void setIntelligence(int intelligence) {
+        this.intelligence += intelligence;
     }
 
-
 /* Getters and Setters */
-
-
 }

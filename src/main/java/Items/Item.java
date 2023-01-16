@@ -13,7 +13,7 @@ public abstract class Item {
 
     /* Field for Item's Attributes.
     Specific for Armor subclass. */
-    protected HeroAttributes armorAttributes = new HeroAttributes();
+    protected HeroAttributes armorAttributes;
 
     /* Field for Item's damage.
     Specific for Weapon subclass. */
@@ -61,22 +61,26 @@ public abstract class Item {
         return slot;
     }
 
+    public HeroAttributes getArmorAttributes() {
+        return armorAttributes;
+    }
+
     /* Getter to return Item's Strength
-    Overridden by Armor subclass. */
+        Overridden by Armor subclass. */
     public int getStrength() {
-        return armorAttributes.getStrength();
+        return getArmorAttributes().getStrength();
     }
 
     /* Getter to return Item's Dexterity
     Overridden by Armor subclass. */
     public int getDexterity() {
-        return armorAttributes.getDexterity();
+        return getArmorAttributes().getDexterity();
     }
 
     /* Getter to return Item's Intelligence
     Overridden by Armor subclass. */
     public int getIntelligence() {
-        return armorAttributes.getIntelligence();
+        return getArmorAttributes().getIntelligence();
     }
 
     /* Getter to return Item's damage.
