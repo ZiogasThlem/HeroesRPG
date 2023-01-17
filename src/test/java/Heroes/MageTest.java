@@ -69,10 +69,10 @@ class MageTest {
 
         Assertions.assertEquals(expected_equipped_armor, linen_robe);
 
-        /*Assertion for armor of invalid ArmorType for Warrior Class*/
+        /*Assertion for armor of invalid ArmorType for Mage Class*/
         Assertions.assertThrows(InvalidArmorException.class, () -> mage.equipItem(silver_plate_chest));
 
-        /*Assertion for armor of higher ItemLevel of warrior */
+        /*Assertion for armor of higher ItemLevel of Mage */
         Assertions.assertThrows(InvalidArmorException.class, () -> mage.equipItem(frostfire_vest));
 
     }
