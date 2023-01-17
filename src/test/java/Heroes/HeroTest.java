@@ -7,21 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HeroTest {
 
-
-    //constructor
-
-    //level up
-
-    //equip weapon
-
-    //equip armor
-
-    //calculate total attributes
-
-
-
-
-
 }
 
 

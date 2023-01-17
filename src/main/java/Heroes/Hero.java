@@ -64,7 +64,7 @@ public abstract class Hero {
     each use by a predetermined amount, and it's level by 1.
     Implemented as abstract as it adds up different amounts
     for each subclass. */
-    public abstract void levelUp();
+    public abstract void levelUp(int levelsGained);
 
     /* "Equip" method used for when a Hero needs to equip a piece of armor */
     public abstract void equipItem(Armor armor) throws InvalidArmorException;
@@ -109,14 +109,10 @@ public abstract class Hero {
     /* Calculating the damage a Hero does */
     public double damage() {
 
-        /* Getting a Hero's primary attribute by using the Math.max() method */
-        int primary = Math.max(Math.max(getLevelAttributes().getStrength(),
-                getLevelAttributes().getDexterity()), getLevelAttributes().getIntelligence());
-
 
         /* Accessing the weapon's damage from the respective Slot
         and calculating the damage with the given equation*/
-        double totalDamage = (1 + primary / 100.0);
+        double totalDamage = (1 + getPrimary() / 100.0);
 
 
         try {
@@ -155,7 +151,7 @@ public abstract class Hero {
     }
 
     /* Setter to increase Hero's Level by one */
-    public void setHeroLevel(int heroLevel) {
+    public void increaseHeroLevel(int heroLevel) {
         this.heroLevel += heroLevel;
     }
 
@@ -197,6 +193,12 @@ public abstract class Hero {
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
+    }
+
+    /* Getting a Hero's primary attribute by using the Math.max() method */
+    public int getPrimary(){
+        return Math.max(Math.max(getLevelAttributes().getStrength(),
+                getLevelAttributes().getDexterity()), getLevelAttributes().getIntelligence());
     }
 
     /*Getters and Setters End*/

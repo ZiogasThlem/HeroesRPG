@@ -21,6 +21,8 @@ public abstract class Item {
 
     /* Field for Item's Slot. */
     protected Slot slot;
+
+    protected WeaponType weaponType;
     protected ArmorType armorType;
 
     /* Item Fields End */
@@ -86,9 +88,20 @@ public abstract class Item {
     /* Getter to return Item's damage.
     Specific for Weapon subclass. */
     public int getWeaponDamage(){
-        return weaponDamage;}
+        return weaponDamage;
+    }
 
     public ArmorType getArmorType() {
         return armorType;
     }
+
+    public WeaponType getWeaponType() {
+        return weaponType;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
 }

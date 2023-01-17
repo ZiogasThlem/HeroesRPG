@@ -1,6 +1,6 @@
 package Heroes;
 
-import java.util.Arrays;
+import java.util.Objects;
 
 public class HeroAttributes{
 
@@ -53,19 +53,42 @@ public class HeroAttributes{
 
 
     /* Setter to increase Strength Attribute */
-    public void setStrength(int strength) {
+    public void increaseStrength(int strength) {
         this.strength += strength;
     }
 
     /* Setter to increase Dexterity Attribute */
-    public void setDexterity(int dexterity) {
+    public void increaseDexterity(int dexterity) {
         this.dexterity += dexterity;
     }
 
     /* Setter to increase Intelligence Attribute */
-    public void setIntelligence(int intelligence) {
+    public void increaseIntelligence(int intelligence) {
         this.intelligence += intelligence;
     }
 
+    /* Setter to decrease Strength Attribute */
+    public void decreaseStrength(int strength) {
+        this.strength -= strength;
+    }
+
+    /* Setter to decrease Dexterity Attribute */
+    public void decreaseDexterity(int dexterity) {
+        this.dexterity -= dexterity;
+    }
+
+    /* Setter to decrease Intelligence Attribute */
+    public void decreaseIntelligence(int intelligence) {
+        this.intelligence -= intelligence;
+    }
+
 /* Getters and Setters */
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HeroAttributes that = (HeroAttributes) o;
+        return strength == that.strength && dexterity == that.dexterity && intelligence == that.intelligence;
+    }
 }

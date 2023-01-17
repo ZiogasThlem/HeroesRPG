@@ -6,6 +6,8 @@ import Items.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static java.lang.String.format;
+
 public class Warrior extends Hero{
 
 
@@ -31,12 +33,12 @@ public class Warrior extends Hero{
 
 
 /* Overridden Methods */
-    public void levelUp() {
+    public void levelUp(int levelsGained) {
 
-        super.setHeroLevel(heroLevel);
-        levelAttributes.setStrength(3);
-        levelAttributes.setDexterity(2);
-        levelAttributes.setIntelligence(1);
+        super.increaseHeroLevel(levelsGained);
+        getLevelAttributes().increaseStrength(3*levelsGained);
+        getLevelAttributes().increaseDexterity(2*levelsGained);
+        getLevelAttributes().increaseIntelligence(levelsGained);
 
         System.out.printf("""
                 Congrats! You leveled up!
@@ -57,9 +59,14 @@ public class Warrior extends Hero{
     @Override
     public String totalHeroAttributes() {
 
-        return "Strength: " + getLevelAttributes().getStrength() +
-                "\nDexterity: " + getLevelAttributes().getDexterity() +
-                "\nIntelligence: " + getLevelAttributes().getIntelligence();
+        return format("""
+                      Strength: %d
+                      Dexterity: %d
+                      Intelligence: %d
+                      """,
+                getLevelAttributes().getStrength(),
+                getLevelAttributes().getDexterity(),
+                getLevelAttributes().getIntelligence());
     }
 
     @Override
@@ -89,11 +96,19 @@ public class Warrior extends Hero{
         }
         /* If not, the Hero may equip the piece of armor */
         else {
+
+            if (getHeroEquipment().get(armor.getSlot())!=null){
+                levelAttributes.decreaseStrength(getHeroEquipment().get(armor.getSlot()).getStrength());
+                levelAttributes.decreaseDexterity(getHeroEquipment().get(armor.getSlot()).getDexterity());
+                levelAttributes.decreaseIntelligence(getHeroEquipment().get(armor.getSlot()).getIntelligence());
+            }
+
             getHeroEquipment().put(armor.getSlot(), armor);
             System.out.println("Equipped "+ armor.getItemName());
-            levelAttributes.setStrength(getHeroEquipment().get(armor.getSlot()).getStrength());
-            levelAttributes.setDexterity(getHeroEquipment().get(armor.getSlot()).getDexterity());
-            levelAttributes.setIntelligence(getHeroEquipment().get(armor.getSlot()).getIntelligence());
+
+            levelAttributes.increaseStrength(getHeroEquipment().get(armor.getSlot()).getStrength());
+            levelAttributes.increaseDexterity(getHeroEquipment().get(armor.getSlot()).getDexterity());
+            levelAttributes.increaseIntelligence(getHeroEquipment().get(armor.getSlot()).getIntelligence());
         }
 
     }
