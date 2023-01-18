@@ -1,25 +1,29 @@
 package Items;
 
 import Heroes.HeroAttributes;
+import Items.enums.ArmorType;
+import Items.enums.Slot;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ArmorTest {
 
-    Armor test_armor = new Armor("Test Armor",10, Slot.BODY,new HeroAttributes(100,100,100),ArmorType.PLATE);
+    Armor test_armor = new Armor("Test Armor",10, Slot.BODY,new HeroAttributes(100,100,100), ArmorType.PLATE);
 
 
 /* Testing Getters */
 
+    /* Testing getArmorAttributes() */
     @Test
     public void test_GetArmorAttributes(){
 
-        HeroAttributes armorAttributes_expected = new HeroAttributes(100,100,100);
+        HeroAttributes armorAttributes_expected = test_armor.armorAttributes;
         HeroAttributes armorAttributes_actual = test_armor.getArmorAttributes();
 
         Assertions.assertEquals(armorAttributes_expected, armorAttributes_actual);
     }
 
+    /* Testing getStrength() */
     @Test
     public void test_GetStrength(){
 
@@ -29,6 +33,7 @@ class ArmorTest {
         Assertions.assertEquals(strength_expected, strength_actual);
     }
 
+    /* Testing getDexterity() */
     @Test
     public void test_GetDexterity(){
 
@@ -38,6 +43,7 @@ class ArmorTest {
         Assertions.assertEquals(dexterity_expected, dexterity_actual);
     }
 
+    /* Testing getIntelligence() */
     @Test
     public void test_GetIntelligence(){
 
@@ -47,6 +53,7 @@ class ArmorTest {
         Assertions.assertEquals(intelligence_expected, intelligence_actual);
     }
 
+    /* Testing getItemName() */
     @Test
     public void test_GetItemName() {
 
@@ -55,6 +62,7 @@ class ArmorTest {
         Assertions.assertEquals(expected_name, actual_name);
     }
 
+    /* Testing getItemSlot() */
     @Test
     public void test_GetItemSlot() {
 
@@ -64,20 +72,21 @@ class ArmorTest {
         Assertions.assertEquals(expected_slot, actual_slot);
     }
 
+    /* Testing getItemLevel() */
     @Test
     public void test_GetItemLevel() {
 
-        int expected_level = 10;
+        int expected_level = test_armor.itemLevel;
         int actual_level = test_armor.getItemLevel();
 
         Assertions.assertEquals(expected_level, actual_level);
     }
 
-
+    /* Testing getIetArmorType() */
     @Test
-    public void test_GetItemType() {
+    public void test_GetArmorType() {
 
-        ArmorType expected_armorType = ArmorType.PLATE;
+        ArmorType expected_armorType = test_armor.armorType;
         ArmorType actual_armorType = test_armor.getArmorType();
 
         Assertions.assertEquals(expected_armorType, actual_armorType);

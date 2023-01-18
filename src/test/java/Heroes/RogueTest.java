@@ -2,7 +2,11 @@ package Heroes;
 
 import Exceptions.InvalidArmorException;
 import Exceptions.InvalidWeaponException;
+import Heroes.subclasses.Rogue;
 import Items.*;
+import Items.enums.ArmorType;
+import Items.enums.Slot;
+import Items.enums.WeaponType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +28,7 @@ class RogueTest {
 
     Weapon wolf_fangs = new Weapon("Wolf Fangs",50,500,WeaponType.DAGGER);
 
-    Armor wildboar_pelt = new Armor("Wildboar Pelt",1,Slot.BODY,new HeroAttributes(3,10,1),ArmorType.LEATHER);
+    Armor wildboar_pelt = new Armor("Wildboar Pelt",1, Slot.BODY,new HeroAttributes(3,10,1), ArmorType.LEATHER);
     Armor dragonscale_chestguard = new Armor("Dragonscale Chestguard",1,Slot.BODY,new HeroAttributes(5,12,3),ArmorType.MAIL);
     Armor cursed_eyepatch = new Armor("Cursed Eyepatch",90,Slot.HEAD,new HeroAttributes(30,100,10),ArmorType.LEATHER);
     Armor bloodfang_pants = new Armor("Bloodfang Pants",1,Slot.LEGS,new HeroAttributes(10,20,5),ArmorType.LEATHER);
@@ -37,10 +41,9 @@ class RogueTest {
     @Test
     public void test_equip_forWeapons() throws InvalidWeaponException {
 
-
+        /* Testing by attempting to equip a valid weapon */
         rogue.equipItem(steel_rappier);
         Item expected_equipped_weapon = rogue.heroEquipment.get(Slot.WEAPON);
-
         Assertions.assertEquals(expected_equipped_weapon, steel_rappier);
 
         /* Assertion for Weapon of invalid WeaponType for Ranger Class */
@@ -55,6 +58,7 @@ class RogueTest {
     @Test
     public void test_equip_forArmor() throws InvalidArmorException {
 
+        /* Testing by attempting to equip a valid piece of armor */
         rogue.equipItem(wildboar_pelt);
         Item expected_equipped_armor = rogue.heroEquipment.get(Slot.BODY);
 
@@ -73,13 +77,15 @@ class RogueTest {
     @Test
     public void test_damage() throws InvalidWeaponException, InvalidArmorException {
 
+         /* From the first part of damage() method, testing damage
+        with just the primary attribute through the given equation */
         double expected_damage = (1 + rogue.getPrimary() / 100.0);
         double actual_damage = rogue.damage();
 
         /*Assertion without weapon */
         Assertions.assertEquals(expected_damage, actual_damage);
 
-
+        /* equipping weapon and testing */
         rogue.equipItem(steel_rappier);
         int weapon_damage = rogue.heroEquipment.get(Slot.WEAPON).getWeaponDamage();
         double expected_with_weapon = expected_damage * weapon_damage;
@@ -88,7 +94,7 @@ class RogueTest {
         /*Assertion with weapon */
         Assertions.assertEquals(expected_with_weapon, actual_with_weapon);
 
-
+        /* replacing weapon  and testing again */
         rogue.levelUp(89); // using levelUp() to equip weapon of higher level
         double expected_afterLevelUp = (1 + rogue.getPrimary() / 100.0);
         rogue.equipItem(wolf_fangs);
@@ -99,6 +105,7 @@ class RogueTest {
         /*Assertion with replaced weapon */
         Assertions.assertEquals(expected_withReplacedWeapon, actual_withReplacedWeapon);
 
+        /* equipping piece of armor and testing */
         rogue.equipItem(cursed_eyepatch);
         double expected_afterEquippingArmor = (1 + rogue.getPrimary() / 100.0) * weapon_damage_withReplacedWeapon;
         double actual_afterEquippingArmor = rogue.damage();
@@ -111,6 +118,8 @@ class RogueTest {
     @Test
     public void test_display() {
 
+        /* Forming a multiline string with
+        values given from the created object. */
         String expected_display = """
                     Hero name: Valeera Sanguinar
                     Class: Rogue
@@ -120,6 +129,8 @@ class RogueTest {
                     Total Intelligence: 1
                     Damage: 1,060000""";
 
+        /* Forming a second multiline string with
+        values taken from respective fields */
         String actual_display = format("""
                     Hero name: %s
                     Class: %s
@@ -140,7 +151,7 @@ class RogueTest {
     @Test
     void test_totalHeroAttributes() throws InvalidArmorException {
 
-
+        /* testing without any equipment */
         String expected_withNoEquipment = format("""
                       Strength: %d
                       Dexterity: %d
@@ -156,6 +167,7 @@ class RogueTest {
         Assertions.assertEquals(expected_withNoEquipment, actual_withNoEquipment);
 
 
+        /* testing by equipping first piece of equipment */
         rogue.equipItem(wildboar_pelt);
         String expected_withOnePiece = format("""
                       Strength: %d
@@ -172,6 +184,7 @@ class RogueTest {
         Assertions.assertEquals(expected_withOnePiece, actual_withOnePiece);
 
 
+        /* testing by equipping a second piece of equipment */
         rogue.equipItem(bloodfang_pants);
         String expected_withTwoPieces = format("""
                       Strength: %d
@@ -188,6 +201,7 @@ class RogueTest {
         Assertions.assertEquals(expected_withTwoPieces, actual_withTwoPieces);
 
 
+        /* testing by replacing previous piece of equipment */
         rogue.equipItem(grizzly_pants);
         String expected_withReplacedPiece = format("""
                       Strength: %d
@@ -209,6 +223,10 @@ class RogueTest {
     @Test
     public void test_levelUP(){
 
+        /* Testing in a similar way with Setter methods of HeroAttributesTest.
+        Getting the original value from getter to expected, adding (or subtracting)
+        n to original value , adding (or subtracting) n to expected_afterLevelUp and multiplying it
+        by the amount define by attributesPerLevel Array for each class. */
 
         int expectedStrength= rogue.levelAttributes.getStrength();
         int expectedDexterity = rogue.levelAttributes.getDexterity();
@@ -236,10 +254,11 @@ class RogueTest {
 
     }
 
-    /* Methods Testing End */
+/* Methods Testing End */
 
-    /* Getters and Setters Testing */
+/* Getters and Setters Testing */
 
+    /* Testing getHeroName() */
     @Test
     public void test_GetHeroName(){
 
@@ -248,6 +267,7 @@ class RogueTest {
         Assertions.assertEquals(expected, actual);
     }
 
+    /* Testing getHeroClassName() */
     @Test
     public void test_GetHeroClassName() {
 
@@ -257,6 +277,7 @@ class RogueTest {
 
     }
 
+    /* Testing getHeroLevel() */
     @Test
     public void test_GetHeroLevel() {
 
@@ -265,6 +286,7 @@ class RogueTest {
         Assertions.assertEquals(expected, actual);
     }
 
+    /* Testing increaseHeroLevel() */
     @Test
     public void test_IncreaseHeroLevel() {
 
@@ -276,15 +298,19 @@ class RogueTest {
         Assertions.assertEquals(expected2, actual);
     }
 
+    /* Testing getHeroEquipment() */
     @Test
     public void test_GetHeroEquipment() throws InvalidArmorException, InvalidWeaponException {
 
+        /* First test with empty equipment */
         HashMap<Slot, Item> expected_equipment = rogue.heroEquipment;
         HashMap<Slot, Item> actual_equipment = rogue.getHeroEquipment();
 
         Assertions.assertEquals(expected_equipment, actual_equipment);
 
 
+        /* Second test with full set of valid equipment
+        with created Armor and Weapon objects*/
         HashMap<Slot, Item> expected_equipment_afterEquipping = new HashMap<>();
         expected_equipment_afterEquipping.put(Slot.HEAD,cursed_eyepatch);
         expected_equipment_afterEquipping.put(Slot.BODY,wildboar_pelt);
@@ -301,6 +327,7 @@ class RogueTest {
         Assertions.assertEquals(expected_equipment_afterEquipping, actual_equipment_afterEquipping);
     }
 
+    /* Testing getValidArmor() */
     @Test
     public void test_GetValidArmor() {
 
@@ -310,6 +337,7 @@ class RogueTest {
         Assertions.assertEquals(armorType_expected, armorType_actual);
     }
 
+    /* Testing getValidWeapon() */
     @Test
     public void test_GetValidWeapon() {
 
@@ -318,6 +346,8 @@ class RogueTest {
 
         Assertions.assertEquals(weaponTypes_expected, weaponTypes_actual);
     }
+
+    /* Testing getLevelAttributes() */
     @Test
     public void test_GetLevelAttributes() {
 
@@ -327,6 +357,7 @@ class RogueTest {
         Assertions.assertEquals(heroAttributes_expected, heroAttributes_actual);
     }
 
+    /* Testing getPrimary() */
     @Test
     public void test_GetPrimary() {
 

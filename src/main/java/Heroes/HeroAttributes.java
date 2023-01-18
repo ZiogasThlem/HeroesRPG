@@ -1,7 +1,5 @@
 package Heroes;
 
-import java.util.Objects;
-
 public class HeroAttributes{
 
 /* Fields */
@@ -38,8 +36,6 @@ public class HeroAttributes{
     public int getIntelligence() {
         return intelligence;
     }
-
-
 
     /* Setter to increase Strength Attribute */
     public void increaseStrength(int strength) {

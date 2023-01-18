@@ -1,8 +1,15 @@
-package Heroes;
+package Heroes.subclasses;
 
-import Items.ArmorType;
-import Items.WeaponType;
+import Heroes.Hero;
+import Heroes.HeroAttributes;
+import Items.enums.ArmorType;
+import Items.enums.WeaponType;
 import java.util.ArrayList;
+
+/* Savage, ruthless, an unstoppable force. That's how his enemies describe the
+Warrior. A combination of brutality, unbeatable combat skills and strength of a
+whole regiment of mere soldiers forges the Warrior to become a deadly to any fool who
+dared to cause his wrath. */
 
 public class Warrior extends Hero {
 

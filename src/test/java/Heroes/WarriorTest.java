@@ -2,7 +2,11 @@ package Heroes;
 
 import Exceptions.InvalidArmorException;
 import Exceptions.InvalidWeaponException;
+import Heroes.subclasses.Warrior;
 import Items.*;
+import Items.enums.ArmorType;
+import Items.enums.Slot;
+import Items.enums.WeaponType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +29,7 @@ class WarriorTest {
 
 
     Armor bronze_plate_helmet = new Armor("Bronze Plate Helmet", 1, Slot.HEAD,
-            new HeroAttributes(4,2,1),ArmorType.PLATE);
+            new HeroAttributes(4,2,1), ArmorType.PLATE);
     Armor simple_cloth_shirt = new Armor("Simple Cloth Shirt", 1, Slot.BODY,
             new HeroAttributes(1,1,3),ArmorType.CLOTH);
     Armor icebane_breastplate = new Armor("Icebane Breastplate", 60, Slot.BODY,
@@ -42,7 +46,7 @@ class WarriorTest {
     @Test
     public void test_equip_forWeapons() throws InvalidWeaponException {
 
-
+        /* Testing by attempting to equip a valid weapon */
         warrior.equipItem(bronzeLongblade);
         Item expected_equipped_weapon = warrior.heroEquipment.get(Slot.WEAPON);
 
@@ -60,6 +64,7 @@ class WarriorTest {
     @Test
     public void test_equip_forArmor() throws InvalidArmorException {
 
+        /* Testing by attempting to equip a valid piece of armor */
         warrior.equipItem(bronze_plate_helmet);
         Item expected_equipped_armor = warrior.heroEquipment.get(Slot.HEAD);
 
@@ -78,14 +83,16 @@ class WarriorTest {
     @Test
     public void test_damage() throws InvalidWeaponException, InvalidArmorException {
 
+        /* From the first part of damage() method, testing damage
+        with just the primary attribute through the given equation */
         double expected_damage = (1 + warrior.getPrimary() / 100.0);
-
         double actual_damage = warrior.damage();
 
         /*Assertion without weapon */
         Assertions.assertEquals(expected_damage, actual_damage);
 
 
+        /* equipping weapon and testing */
         warrior.equipItem(bronzeLongblade);
         int weapon_damage = warrior.heroEquipment.get(Slot.WEAPON).getWeaponDamage();
         double expected_with_weapon = expected_damage * weapon_damage;
@@ -94,7 +101,7 @@ class WarriorTest {
         /*Assertion with weapon */
         Assertions.assertEquals(expected_with_weapon, actual_with_weapon);
 
-
+        /* replacing weapon  and testing again */
         warrior.levelUp(79); // using levelUp() to equip weapon of higher level
         double expected_afterLevelUp = (1 + warrior.getPrimary() / 100.0);
         warrior.equipItem(ashbringer);
@@ -105,6 +112,7 @@ class WarriorTest {
         /*Assertion with replaced weapon */
         Assertions.assertEquals(expected_withReplacedWeapon, actual_withReplacedWeapon);
 
+        /* equipping piece of armor and testing */
         warrior.equipItem(icebane_breastplate);
         double expected_afterEquippingArmor = (1 + warrior.getPrimary() / 100.0) * weapon_damage_withReplacedWeapon;
         double actual_afterEquippingArmor = warrior.damage();
@@ -117,7 +125,9 @@ class WarriorTest {
     @Test
     public void test_display() {
 
-     String expected_display = """
+        /* Forming a multiline string with
+        values given from the created object. */
+         String expected_display = """
                     Hero name: Garrosh Hellscream
                     Class: Warrior
                     Level: 1
@@ -126,7 +136,9 @@ class WarriorTest {
                     Total Intelligence: 1
                     Damage: 1,050000""";
 
-     String actual_display = format("""
+         /* Forming a second multiline string with
+        values taken from respective fields */
+         String actual_display = format("""
                     Hero name: %s
                     Class: %s
                     Level: %d
@@ -138,7 +150,7 @@ class WarriorTest {
                      warrior.levelAttributes.getStrength(), warrior.levelAttributes.getDexterity(),
                      warrior.levelAttributes.getIntelligence(), warrior.damage());
 
-     Assertions.assertEquals(expected_display, actual_display);
+        Assertions.assertEquals(expected_display, actual_display);
     }
 
 
@@ -146,7 +158,7 @@ class WarriorTest {
     @Test
     void test_totalHeroAttributes() throws InvalidArmorException {
 
-
+        /* testing without any equipment */
         String expected_withNoEquipment = format("""
                       Strength: %d
                       Dexterity: %d
@@ -162,6 +174,7 @@ class WarriorTest {
         Assertions.assertEquals(expected_withNoEquipment, actual_withNoEquipment);
 
 
+        /* testing by equipping first piece of equipment */
         warrior.equipItem(bronze_plate_helmet);
         String expected_withOnePiece = format("""
                       Strength: %d
@@ -176,8 +189,8 @@ class WarriorTest {
 
         /* Assertion with one piece of equipment */
         Assertions.assertEquals(expected_withOnePiece, actual_withOnePiece);
-        //two pieces of equipment
 
+        /* testing by equipping a second piece of equipment */
         warrior.equipItem(glad_legguards);
         String expected_withTwoPieces = format("""
                       Strength: %d
@@ -193,6 +206,7 @@ class WarriorTest {
         Assertions.assertEquals(expected_withTwoPieces, actual_withTwoPieces);
 
 
+        /* testing by replacing previous piece of equipment */
         warrior.equipItem(apprent_legguards);
         String expected_withReplacedPiece = format("""
                       Strength: %d
@@ -213,6 +227,11 @@ class WarriorTest {
     /* Testing levelUP() */
     @Test
     public void test_levelUP(){
+
+        /* Testing in a similar way with Setter methods of HeroAttributesTest.
+        Getting the original value from getter to expected, adding (or subtracting)
+        n to original value , adding (or subtracting) n to expected_afterLevelUp and multiplying it
+        by the amount define by attributesPerLevel Array for each class. */
 
         int expectedStrength= warrior.levelAttributes.getStrength();
         int expectedDexterity = warrior.levelAttributes.getDexterity();
@@ -244,6 +263,7 @@ class WarriorTest {
 
 /* Getters and Setters Testing */
 
+    /* Testing getHeroName() */
     @Test
     public void test_GetHeroName(){
 
@@ -252,6 +272,7 @@ class WarriorTest {
         Assertions.assertEquals(expected, actual);
     }
 
+    /* Testing getHeroClassName() */
     @Test
     public void test_GetHeroClassName() {
 
@@ -261,6 +282,7 @@ class WarriorTest {
 
     }
 
+    /* Testing getHeroLevel() */
     @Test
     public void test_GetHeroLevel() {
 
@@ -269,6 +291,7 @@ class WarriorTest {
         Assertions.assertEquals(expected, actual);
     }
 
+    /* Testing increaseHeroLevel() */
     @Test
     public void test_IncreaseHeroLevel() {
 
@@ -280,17 +303,20 @@ class WarriorTest {
         Assertions.assertEquals(expected2, actual);
     }
 
+    /* Testing getHeroEquipment() */
     @Test
     public void test_GetHeroEquipment() throws InvalidArmorException, InvalidWeaponException {
 
+        /* First test with empty equipment */
         HashMap<Slot, Item> expected_equipment = warrior.heroEquipment;
-
         HashMap<Slot, Item> actual_equipment = warrior.getHeroEquipment();
 
         /* Assertion without equipment */
         Assertions.assertEquals(expected_equipment, actual_equipment);
 
 
+        /* Second test with full set of valid equipment
+        with created Armor and Weapon objects*/
         HashMap<Slot, Item> expected_equipment_afterEquipping = new HashMap<>();
         expected_equipment_afterEquipping.put(Slot.HEAD,bronze_plate_helmet);
         expected_equipment_afterEquipping.put(Slot.BODY,icebane_breastplate);
@@ -309,6 +335,7 @@ class WarriorTest {
         Assertions.assertEquals(expected_equipment_afterEquipping, actual_equipment_afterEquipping);
     }
 
+    /* Testing getValidArmor() */
     @Test
     public void test_GetValidArmor() {
 
@@ -318,6 +345,7 @@ class WarriorTest {
         Assertions.assertEquals(armorType_expected, armorType_actual);
     }
 
+    /* Testing getValidWeapon() */
     @Test
     public void test_GetValidWeapon() {
 
@@ -326,6 +354,8 @@ class WarriorTest {
 
         Assertions.assertEquals(weaponTypes_expected, weaponTypes_actual);
     }
+
+    /* Testing getLevelAttributes() */
     @Test
     public void test_GetLevelAttributes() {
 
@@ -335,6 +365,7 @@ class WarriorTest {
         Assertions.assertEquals(heroAttributes_expected, heroAttributes_actual);
     }
 
+    /* Testing getPrimary() */
     @Test
     public void test_GetPrimary() {
 

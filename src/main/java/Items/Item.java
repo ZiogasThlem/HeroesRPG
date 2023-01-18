@@ -1,6 +1,9 @@
 package Items;
 
 import Heroes.HeroAttributes;
+import Items.enums.ArmorType;
+import Items.enums.Slot;
+import Items.enums.WeaponType;
 
 public abstract class Item {
 
@@ -52,6 +55,8 @@ public abstract class Item {
     }
 
 /* Constructors End */
+
+/* Getters */
 
     /* Getter to return Item's name */
     public String getItemName() {
@@ -110,6 +115,8 @@ public abstract class Item {
     public WeaponType getWeaponType() {
         return weaponType;
     }
+
+/* Getters End */
 
 
     /* Overriding equals() as it

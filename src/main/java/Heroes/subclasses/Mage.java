@@ -1,10 +1,17 @@
-package Heroes;
+package Heroes.subclasses;
 
-import Items.ArmorType;
-import Items.WeaponType;
+import Heroes.Hero;
+import Heroes.HeroAttributes;
+import Items.enums.ArmorType;
+import Items.enums.WeaponType;
 import java.util.ArrayList;
 
-public class Mage extends Hero{
+/* Mage can invoke and manipulate the powers of Frost, Fire and Arcane to his
+advantage. Grown up in elite cycles, respected by the King, esteemed within the
+commons. Mage is equally capable of defending his city from any kind of intruder,
+as well as bringing down havoc to be spoken for hundreds of years later. */
+
+public class Mage extends Hero {
 
 
 /* Inherited Constructor with Mage

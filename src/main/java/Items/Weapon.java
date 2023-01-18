@@ -1,6 +1,9 @@
 package Items;
 
 
+import Items.enums.Slot;
+import Items.enums.WeaponType;
+
 public class Weapon extends Item{
 
 /* Inherited Constructor */

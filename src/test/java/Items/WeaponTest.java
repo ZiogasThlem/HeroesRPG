@@ -1,16 +1,17 @@
 package Items;
 
+import Items.enums.WeaponType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 
 class WeaponTest {
 
-    Weapon test_weapon = new Weapon("Test Weapon",50,1000,WeaponType.BOW);
+    Weapon test_weapon = new Weapon("Test Weapon",50,1000, WeaponType.BOW);
 
 /* Testing Getters */
 
-
+    /* Testing getItemLevel() */
     @Test
     public void test_GetItemLevel() {
 
@@ -20,7 +21,7 @@ class WeaponTest {
         Assertions.assertEquals(expected_level, actual_level);
     }
 
-
+    /* Testing getItemName() */
     @Test
     public void test_GetItemName() {
 
@@ -30,6 +31,7 @@ class WeaponTest {
 
     }
 
+    /* Testing getWeaponDamage() */
     @Test
     public void test_getWeaponDamage() {
 
@@ -39,6 +41,7 @@ class WeaponTest {
         Assertions.assertEquals(expected_damage, actual_damage);
     }
 
+    /* Testing getWeaponType() */
     @Test void test_getWeaponType() {
 
         WeaponType expected_weaponType = test_weapon.weaponType;

@@ -1,10 +1,17 @@
-package Heroes;
+package Heroes.subclasses;
 
-import Items.ArmorType;
-import Items.WeaponType;
+import Heroes.Hero;
+import Heroes.HeroAttributes;
+import Items.enums.ArmorType;
+import Items.enums.WeaponType;
 import java.util.ArrayList;
 
-public class Rogue extends Hero{
+/* They say that by the time you spot a Rogue, you are probably already in Death's door.
+Her agile, surgical strikes can take down a man five times her size. Often working alone,
+carrying out death contracts, running the underworld with her connections, infiltrating
+the enemy lines. Always goes unnoticed. Always lethal. */
+
+public class Rogue extends Hero {
 
 
 /* Inherited Constructor with Rogue
