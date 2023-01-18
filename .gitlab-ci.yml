@@ -1,10 +1,8 @@
-java:
+stages:
+  - test
+
+junit:
   stage: test
+  image: gradle:jdk19-alpine
   script:
-    - mvn verify
-  artifacts:
-    when: always
-    reports:
-      junit:
-        - target/surefire-reports/TEST-*.xml
-        - target/failsafe-reports/TEST-*.xml
+    - gradle clean test --info
