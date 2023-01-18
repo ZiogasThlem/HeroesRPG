@@ -10,35 +10,31 @@ class HeroAttributesTest {
     @Test
     public void getStrengthTest() {
 
-        int expected = attributes.getStrength();
-        int input = 140;
-        int input2 = 20;
+        int expected = 140;
+        int actual = attributes.getStrength();
 
-        Assertions.assertEquals(expected, input);
-        Assertions.assertNotEquals(expected, input2);
+        Assertions.assertEquals(expected, actual);
 
     }
 
     @Test
     public void getDexterityTest() {
 
-        int expected = attributes.getDexterity();
-        int input = 18;
-        int input2 = 10;
+        int expected= 18;
+        int actual = attributes.getDexterity();
 
-        Assertions.assertEquals(expected, input);
-        Assertions.assertNotEquals(expected, input2);
+        Assertions.assertEquals(expected, actual);
+
     }
 
     @Test
     public void getIntelligenceTest() {
 
-        int expected = attributes.getIntelligence();
-        int input = 6;
-        int input2 = 10;
+        int expected = 6;
+        int actual = attributes.getIntelligence();
 
-        Assertions.assertEquals(expected, input);
-        Assertions.assertNotEquals(expected, input2);
+        Assertions.assertEquals(expected, actual);
+
     }
 
     @Test
@@ -47,10 +43,9 @@ class HeroAttributesTest {
 
         int expected = 150;
         attributes.increaseStrength(10);
-        int input = attributes.getStrength();
+        int actual = attributes.getStrength();
 
-        Assertions.assertEquals(expected, input);
-
+        Assertions.assertEquals(expected, actual);
 
     }
 
@@ -59,11 +54,9 @@ class HeroAttributesTest {
 
         int expected = 30;
         attributes.increaseDexterity(12);
-        int input = attributes.getDexterity();
+        int actual = attributes.getDexterity();
 
-        Assertions.assertEquals(expected, input);
-
-
+        Assertions.assertEquals(expected, actual);
 
     }
 
@@ -72,9 +65,9 @@ class HeroAttributesTest {
 
         int expected = 16;
         attributes.increaseIntelligence(10);
-        int input = attributes.getIntelligence();
+        int actual = attributes.getIntelligence();
 
-        Assertions.assertEquals(expected, input);
+        Assertions.assertEquals(expected, actual);
 
     }
 
@@ -84,10 +77,9 @@ class HeroAttributesTest {
 
         int expected = 100;
         attributes.decreaseStrength(40);
-        int input = attributes.getStrength();
+        int actual = attributes.getStrength();
 
-        Assertions.assertEquals(expected, input);
-
+        Assertions.assertEquals(expected, actual);
 
     }
 
@@ -96,11 +88,9 @@ class HeroAttributesTest {
 
         int expected = 10;
         attributes.decreaseDexterity(8);
-        int input = attributes.getDexterity();
+        int actual = attributes.getDexterity();
 
-        Assertions.assertEquals(expected, input);
-
-
+        Assertions.assertEquals(expected, actual);
 
     }
 
@@ -109,9 +99,9 @@ class HeroAttributesTest {
 
         int expected = 1;
         attributes.decreaseIntelligence(5);
-        int input = attributes.getIntelligence();
+        int actual = attributes.getIntelligence();
 
-        Assertions.assertEquals(expected, input);
+        Assertions.assertEquals(expected, actual);
 
     }
 

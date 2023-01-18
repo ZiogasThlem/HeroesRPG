@@ -28,7 +28,7 @@ class MageTest {
     Armor silver_plate_chest = new Armor("Bronze Plate Chest", 1, Slot.BODY,
             new HeroAttributes(40,25,5),ArmorType.PLATE);
 
-    Armor frostfire_vest = new Armor("Frostfire Vest", 60, Slot.BODY,
+    Armor frostfire_kilt = new Armor("Frostfire Kilt", 60, Slot.LEGS,
             new HeroAttributes(10,20,100 ),ArmorType.CLOTH);
 
     Armor crown_of_eternal_winter = new Armor("Crown of Eternal Winter", 1, Slot.HEAD,
@@ -47,7 +47,7 @@ class MageTest {
 
 
         mage.equipItem(appretice_wand);
-        Item expected_equipped_weapon = mage.getHeroEquipment().get(Slot.WEAPON);
+        Item expected_equipped_weapon = mage.heroEquipment.get(Slot.WEAPON);
 
         Assertions.assertEquals(expected_equipped_weapon, appretice_wand);
 
@@ -65,7 +65,7 @@ class MageTest {
     public void test_equip_forArmor() throws InvalidArmorException {
 
         mage.equipItem(linen_robe);
-        Item expected_equipped_armor = mage.getHeroEquipment().get(Slot.BODY);
+        Item expected_equipped_armor = mage.heroEquipment.get(Slot.BODY);
 
         Assertions.assertEquals(expected_equipped_armor, linen_robe);
 
@@ -73,7 +73,7 @@ class MageTest {
         Assertions.assertThrows(InvalidArmorException.class, () -> mage.equipItem(silver_plate_chest));
 
         /*Assertion for armor of higher ItemLevel of Mage */
-        Assertions.assertThrows(InvalidArmorException.class, () -> mage.equipItem(frostfire_vest));
+        Assertions.assertThrows(InvalidArmorException.class, () -> mage.equipItem(frostfire_kilt));
 
     }
 
@@ -91,7 +91,7 @@ class MageTest {
 
 
         mage.equipItem(appretice_wand);
-        int weapon_damage = mage.getHeroEquipment().get(Slot.WEAPON).getWeaponDamage();
+        int weapon_damage = mage.heroEquipment.get(Slot.WEAPON).getWeaponDamage();
         double expected_with_weapon = expected_damage * weapon_damage;
         double actual_with_weapon = mage.damage();
 
@@ -102,14 +102,14 @@ class MageTest {
         mage.levelUp(79); // using levelUp() to equip weapon of higher level
         double expected_afterLevelUp = (1 + mage.getPrimary() / 100.0);
         mage.equipItem(atiesh);
-        int weapon_damage_withReplacedWeapon = mage.getHeroEquipment().get(Slot.WEAPON).getWeaponDamage();
+        int weapon_damage_withReplacedWeapon = mage.heroEquipment.get(Slot.WEAPON).getWeaponDamage();
         double expected_withReplacedWeapon = expected_afterLevelUp * weapon_damage_withReplacedWeapon;
         double actual_withReplacedWeapon = mage.damage();
 
         /*Assertion with replaced weapon */
         Assertions.assertEquals(expected_withReplacedWeapon, actual_withReplacedWeapon);
 
-        mage.equipItem(frostfire_vest);
+        mage.equipItem(frostfire_kilt);
         double expected_afterEquippingArmor = (1 + mage.getPrimary() / 100.0) * weapon_damage_withReplacedWeapon;
         double actual_afterEquippingArmor = mage.damage();
 
@@ -121,15 +121,14 @@ class MageTest {
     @Test
     public void test_display() {
 
-        String expected_display = format("""
-                    Hero name: %s
-                    Class: %s
-                    Level: %d
-                    Total Strength: %d
-                    Total Dexterity: %d
-                    Total Intelligence: %d
-                    Damage: %f""", "Archmage Kadgar", "Mage",
-                1,1,1,8, (1 + mage.getPrimary() / 100.0));
+        String expected_display = """
+                    Hero name: Archmage Kadgar
+                    Class: Mage
+                    Level: 1
+                    Total Strength: 1
+                    Total Dexterity: 1
+                    Total Intelligence: 8
+                    Damage: 1,080000""";
 
         String actual_display = format("""
                     Hero name: %s
@@ -138,10 +137,10 @@ class MageTest {
                     Total Strength: %d
                     Total Dexterity: %d
                     Total Intelligence: %d
-                    Damage: %f""", mage.getHeroName(),
-                mage.getClassName(), mage.getHeroLevel(),
-                mage.getLevelAttributes().getStrength(), mage.getLevelAttributes().getDexterity(),
-                mage.getLevelAttributes().getIntelligence(), mage.damage());
+                    Damage: %f""", mage.heroName,
+                mage.className, mage.heroLevel,
+                mage.levelAttributes.getStrength(), mage.levelAttributes.getDexterity(),
+                mage.levelAttributes.getIntelligence(), mage.damage());
 
         Assertions.assertEquals(expected_display, actual_display);
     }
@@ -157,16 +156,11 @@ class MageTest {
                       Dexterity: %d
                       Intelligence: %d
                       """,
-                1, 1, 8);
+                mage.levelAttributes.getStrength(),
+                mage.levelAttributes.getDexterity(),
+                mage.levelAttributes.getIntelligence());
 
-        String actual_withNoEquipment = format("""
-                      Strength: %d
-                      Dexterity: %d
-                      Intelligence: %d
-                      """,
-                mage.getLevelAttributes().getStrength(),
-                mage.getLevelAttributes().getDexterity(),
-                mage.getLevelAttributes().getIntelligence());
+        String actual_withNoEquipment = mage.totalHeroAttributes();
 
         /* Assertion without any equipment */
         Assertions.assertEquals(expected_withNoEquipment, actual_withNoEquipment);
@@ -178,16 +172,12 @@ class MageTest {
                       Dexterity: %d
                       Intelligence: %d
                       """,
-                2, 2, 18);
+                mage.levelAttributes.getStrength(),
+                mage.levelAttributes.getDexterity(),
+                mage.levelAttributes.getIntelligence());
 
-        String actual_withOnePiece = format("""
-                      Strength: %d
-                      Dexterity: %d
-                      Intelligence: %d
-                      """,
-                mage.getLevelAttributes().getStrength(),
-                mage.getLevelAttributes().getDexterity(),
-                mage.getLevelAttributes().getIntelligence());
+        String actual_withOnePiece = mage.totalHeroAttributes();
+
         /* Assertion with one piece of equipment */
         Assertions.assertEquals(expected_withOnePiece, actual_withOnePiece);
 
@@ -197,17 +187,11 @@ class MageTest {
                       Dexterity: %d
                       Intelligence: %d
                       """,
-                3, 7, 68);
+                mage.levelAttributes.getStrength(),
+                mage.levelAttributes.getDexterity(),
+                mage.levelAttributes.getIntelligence());
 
-        String actual_withTwoPieces = format("""
-                      Strength: %d
-                      Dexterity: %d
-                      Intelligence: %d
-                      """,
-                mage.getLevelAttributes().getStrength(),
-                mage.getLevelAttributes().getDexterity(),
-                mage.getLevelAttributes().getIntelligence());
-
+        String actual_withTwoPieces = mage.totalHeroAttributes();
         /* Assertion with two pieces of equipment */
         Assertions.assertEquals(expected_withTwoPieces, actual_withTwoPieces);
 
@@ -218,16 +202,11 @@ class MageTest {
                       Dexterity: %d
                       Intelligence: %d
                       """,
-                3, 3, 23);
+                mage.levelAttributes.getStrength(),
+                mage.levelAttributes.getDexterity(),
+                mage.levelAttributes.getIntelligence());
 
-        String actual_withReplacedPiece = format("""
-                      Strength: %d
-                      Dexterity: %d
-                      Intelligence: %d
-                      """,
-                mage.getLevelAttributes().getStrength(),
-                mage.getLevelAttributes().getDexterity(),
-                mage.getLevelAttributes().getIntelligence());
+        String actual_withReplacedPiece = mage.totalHeroAttributes();
 
         /* Assertion with a replaced piece of equipment */
         Assertions.assertEquals(expected_withReplacedPiece, actual_withReplacedPiece);
@@ -238,36 +217,41 @@ class MageTest {
     @Test
     public void test_levelUP(){
 
+        int expectedStrength= mage.levelAttributes.getStrength();
+        int expectedDexterity = mage.levelAttributes.getDexterity();
+        int expectedIntelligence = mage.levelAttributes.getIntelligence();
+
         mage.levelUp(10);
 
-        int expectedLevel = 11;
+        int expectedLevel_afterLevelUp = mage.heroLevel += 10;
         int actualLevel = mage.getHeroLevel();
 
-        int expectedStrength = 11;
+        int expectedStrength_afterLevelUp = expectedStrength + 10 * mage.attributesPerLevel[0];
         int actualStrength = mage.getLevelAttributes().getStrength();
 
-        int expectedDexterity = 11;
+        int expectedDexterity_afterLevelUp = expectedDexterity + 10 * mage.attributesPerLevel[1];
         int actualDexterity = mage.getLevelAttributes().getDexterity();
 
-        int expectedIntelligence = 58;
+        int expectedIntelligence_afterLevelUp = expectedIntelligence + 10 * mage.attributesPerLevel[2];
         int actualIntelligence = mage.getLevelAttributes().getIntelligence();
 
 
-        Assertions.assertEquals(expectedLevel, actualLevel);
-        Assertions.assertEquals(expectedStrength, actualStrength);
-        Assertions.assertEquals(expectedDexterity, actualDexterity);
-        Assertions.assertEquals(expectedIntelligence, actualIntelligence);
+
+        Assertions.assertEquals(expectedLevel_afterLevelUp, actualLevel);
+        Assertions.assertEquals(expectedStrength_afterLevelUp, actualStrength);
+        Assertions.assertEquals(expectedDexterity_afterLevelUp, actualDexterity);
+        Assertions.assertEquals(expectedIntelligence_afterLevelUp, actualIntelligence);
 
     }
 
-    /* Methods Testing End */
+/* Methods Testing End */
 
-    /* Getters and Setters Testing */
+/* Getters and Setters Testing */
 
     @Test
     public void test_GetHeroName(){
 
-        String expected = "Archmage Kadgar";
+        String expected = mage.heroName;
         String actual = mage.getHeroName();
         Assertions.assertEquals(expected, actual);
     }
@@ -275,7 +259,7 @@ class MageTest {
     @Test
     public void test_GetHeroClassName() {
 
-        String expected = "Mage";
+        String expected = mage.className;
         String actual = mage.getClassName();
         Assertions.assertEquals(expected, actual);
 
@@ -284,7 +268,7 @@ class MageTest {
     @Test
     public void test_GetHeroLevel() {
 
-        int expected = 1;
+        int expected = mage.heroLevel;
         int actual = mage.getHeroLevel();
         Assertions.assertEquals(expected, actual);
     }
@@ -292,30 +276,44 @@ class MageTest {
     @Test
     public void test_IncreaseHeroLevel() {
 
+        int expected = mage.heroLevel;
         mage.increaseHeroLevel(4);
-        int expected = 5;
+        int expected2 = expected + 4;
         int actual = mage.getHeroLevel();
-        Assertions.assertEquals(expected, actual);
+
+        Assertions.assertEquals(expected2, actual);
     }
 
     @Test
-    public void test_GetHeroEquipment() {
+    public void test_GetHeroEquipment() throws InvalidWeaponException, InvalidArmorException {
 
-        HashMap<Slot, Item> expected_equipment = new HashMap<>();
-        expected_equipment.put(Slot.HEAD, null);
-        expected_equipment.put(Slot.BODY, null);
-        expected_equipment.put(Slot.LEGS, null);
-        expected_equipment.put(Slot.WEAPON, null);
-
+        HashMap<Slot, Item> expected_equipment = mage.heroEquipment;
         HashMap<Slot, Item> actual_equipment = mage.getHeroEquipment();
 
         Assertions.assertEquals(expected_equipment, actual_equipment);
+
+
+        HashMap<Slot, Item> expected_equipment_afterEquipping = new HashMap<>();
+        expected_equipment_afterEquipping.put(Slot.HEAD,crown_of_eternal_winter);
+        expected_equipment_afterEquipping.put(Slot.BODY,linen_robe);
+        expected_equipment_afterEquipping.put(Slot.LEGS,frostfire_kilt);
+        expected_equipment_afterEquipping.put(Slot.WEAPON,atiesh);
+
+        mage.levelUp(100); // using levelUp() to equip higher level Items
+        mage.equipItem(atiesh);
+        mage.equipItem(frostfire_kilt);
+        mage.equipItem(linen_robe);
+        mage.equipItem(crown_of_eternal_winter);
+
+        HashMap<Slot, Item> actual_equipment_afterEquipping = mage.getHeroEquipment();
+        Assertions.assertEquals(expected_equipment_afterEquipping, actual_equipment_afterEquipping);
+
     }
 
     @Test
     public void test_GetValidArmor() {
 
-        ArmorType armorType_expected = ArmorType.CLOTH;
+        ArmorType armorType_expected = mage.validArmor;
         ArmorType armorType_actual = mage.getValidArmor();
 
         Assertions.assertEquals(armorType_expected, armorType_actual);
@@ -324,10 +322,7 @@ class MageTest {
     @Test
     public void test_GetValidWeapon() {
 
-        ArrayList<WeaponType> weaponTypes_expected = new ArrayList<>();
-        weaponTypes_expected.add(WeaponType.STAFF);
-        weaponTypes_expected.add(WeaponType.WAND);
-
+        ArrayList<WeaponType> weaponTypes_expected = mage.validWeapon;
         ArrayList<WeaponType> weaponTypes_actual = mage.getValidWeapon();
 
         Assertions.assertEquals(weaponTypes_expected, weaponTypes_actual);
@@ -335,7 +330,7 @@ class MageTest {
     @Test
     public void test_GetLevelAttributes() {
 
-        HeroAttributes heroAttributes_expected = new HeroAttributes(1,1,8);
+        HeroAttributes heroAttributes_expected = mage.levelAttributes;
         HeroAttributes heroAttributes_actual = mage.getLevelAttributes();
 
         Assertions.assertEquals(heroAttributes_expected, heroAttributes_actual);
@@ -344,17 +339,16 @@ class MageTest {
     @Test
     public void test_GetPrimary() {
 
-        int expected_primary = 8;
-        int actual_primary = Math.max(Math.max(
+        int expected_primary = Math.max(Math.max(
                         mage.getLevelAttributes().getStrength(),
                         mage.getLevelAttributes().getDexterity()),
-                mage.getLevelAttributes().getIntelligence());
+                        mage.getLevelAttributes().getIntelligence());
+
+        int actual_primary = mage.getPrimary();
 
         Assertions.assertEquals(expected_primary, actual_primary);
 
     }
 
-    /* Getters and Setters Testing End */
-
-
+/* Getters and Setters Testing End */
 }

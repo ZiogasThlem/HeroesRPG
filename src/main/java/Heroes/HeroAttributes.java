@@ -13,13 +13,6 @@ public class HeroAttributes{
 
 /* Fields End */
 
-/* Constructors */
-
-    /* Default Constructor with no
-    arguments for parent class */
-//    public HeroAttributes() {
-//
-//    }
 
     /* Constructor with all Hero
     Attributes for subclasses */
@@ -28,12 +21,10 @@ public class HeroAttributes{
         this.dexterity = dexterity;
         this.intelligence = intelligence;
     }
-/* Constructors End*/
 
 /* Getters and Setters */
 
     /* Getter to return Strength Attribute */
-
     public int getStrength() {
         return strength;
     }
@@ -48,8 +39,6 @@ public class HeroAttributes{
         return intelligence;
     }
 
-    /* Getter to return all three
-    Attributes in a String.  */
 
 
     /* Setter to increase Strength Attribute */
@@ -66,6 +55,7 @@ public class HeroAttributes{
     public void increaseIntelligence(int intelligence) {
         this.intelligence += intelligence;
     }
+
 
     /* Setter to decrease Strength Attribute */
     public void decreaseStrength(int strength) {
@@ -84,6 +74,8 @@ public class HeroAttributes{
 
 /* Getters and Setters */
 
+    /* Overriding equals() as it
+     is required for Testing*/
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

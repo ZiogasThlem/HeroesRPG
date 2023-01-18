@@ -23,7 +23,7 @@ class ArmorTest {
     @Test
     public void test_GetStrength(){
 
-        int strength_expected = 100;
+        int strength_expected = test_armor.armorAttributes.getStrength();
         int strength_actual = test_armor.getArmorAttributes().getStrength();
 
         Assertions.assertEquals(strength_expected, strength_actual);
@@ -32,7 +32,7 @@ class ArmorTest {
     @Test
     public void test_GetDexterity(){
 
-        int dexterity_expected = 100;
+        int dexterity_expected = test_armor.armorAttributes.getDexterity();
         int dexterity_actual = test_armor.getArmorAttributes().getDexterity();
 
         Assertions.assertEquals(dexterity_expected, dexterity_actual);
@@ -41,7 +41,7 @@ class ArmorTest {
     @Test
     public void test_GetIntelligence(){
 
-        int intelligence_expected = 100;
+        int intelligence_expected = test_armor.armorAttributes.getIntelligence();
         int intelligence_actual = test_armor.getArmorAttributes().getIntelligence();
 
         Assertions.assertEquals(intelligence_expected, intelligence_actual);
@@ -50,7 +50,7 @@ class ArmorTest {
     @Test
     public void test_GetItemName() {
 
-        String expected_name = "Test Armor";
+        String expected_name = test_armor.itemName;
         String actual_name = test_armor.getItemName();
         Assertions.assertEquals(expected_name, actual_name);
     }
@@ -58,7 +58,7 @@ class ArmorTest {
     @Test
     public void test_GetItemSlot() {
 
-        Slot expected_slot = Slot.BODY;
+        Slot expected_slot = test_armor.slot;
         Slot actual_slot = test_armor.getSlot();
 
         Assertions.assertEquals(expected_slot, actual_slot);

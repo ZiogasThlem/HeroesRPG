@@ -24,7 +24,7 @@ class WarriorTest {
     Weapon kings_bane = new Weapon("King's Bane",1,1000, WeaponType.DAGGER);
 
 
-    Armor bronze_plate_chest = new Armor("Bronze Plate Chest", 1, Slot.BODY,
+    Armor bronze_plate_helmet = new Armor("Bronze Plate Helmet", 1, Slot.HEAD,
             new HeroAttributes(4,2,1),ArmorType.PLATE);
     Armor simple_cloth_shirt = new Armor("Simple Cloth Shirt", 1, Slot.BODY,
             new HeroAttributes(1,1,3),ArmorType.CLOTH);
@@ -44,7 +44,7 @@ class WarriorTest {
 
 
         warrior.equipItem(bronzeLongblade);
-        Item expected_equipped_weapon = warrior.getHeroEquipment().get(Slot.WEAPON);
+        Item expected_equipped_weapon = warrior.heroEquipment.get(Slot.WEAPON);
 
         Assertions.assertEquals(expected_equipped_weapon, bronzeLongblade);
 
@@ -60,10 +60,10 @@ class WarriorTest {
     @Test
     public void test_equip_forArmor() throws InvalidArmorException {
 
-        warrior.equipItem(bronze_plate_chest);
-        Item expected_equipped_armor = warrior.getHeroEquipment().get(Slot.BODY);
+        warrior.equipItem(bronze_plate_helmet);
+        Item expected_equipped_armor = warrior.heroEquipment.get(Slot.HEAD);
 
-        Assertions.assertEquals(expected_equipped_armor, bronze_plate_chest);
+        Assertions.assertEquals(expected_equipped_armor, bronze_plate_helmet);
 
         /*Assertion for armor of invalid ArmorType for Warrior Class*/
         Assertions.assertThrows(InvalidArmorException.class, () -> warrior.equipItem(simple_cloth_shirt));
@@ -87,7 +87,7 @@ class WarriorTest {
 
 
         warrior.equipItem(bronzeLongblade);
-        int weapon_damage = warrior.getHeroEquipment().get(Slot.WEAPON).getWeaponDamage();
+        int weapon_damage = warrior.heroEquipment.get(Slot.WEAPON).getWeaponDamage();
         double expected_with_weapon = expected_damage * weapon_damage;
         double actual_with_weapon = warrior.damage();
 
@@ -98,7 +98,7 @@ class WarriorTest {
         warrior.levelUp(79); // using levelUp() to equip weapon of higher level
         double expected_afterLevelUp = (1 + warrior.getPrimary() / 100.0);
         warrior.equipItem(ashbringer);
-        int weapon_damage_withReplacedWeapon = warrior.getHeroEquipment().get(Slot.WEAPON).getWeaponDamage();
+        int weapon_damage_withReplacedWeapon = warrior.heroEquipment.get(Slot.WEAPON).getWeaponDamage();
         double expected_withReplacedWeapon = expected_afterLevelUp * weapon_damage_withReplacedWeapon;
         double actual_withReplacedWeapon = warrior.damage();
 
@@ -117,15 +117,14 @@ class WarriorTest {
     @Test
     public void test_display() {
 
-     String expected_display = format("""
-                    Hero name: %s
-                    Class: %s
-                    Level: %d
-                    Total Strength: %d
-                    Total Dexterity: %d
-                    Total Intelligence: %d
-                    Damage: %f""", "Garrosh Hellscream", "Warrior",
-                    1,5,2,1, (1 + warrior.getPrimary() / 100.0));
+     String expected_display = """
+                    Hero name: Garrosh Hellscream
+                    Class: Warrior
+                    Level: 1
+                    Total Strength: 5
+                    Total Dexterity: 2
+                    Total Intelligence: 1
+                    Damage: 1,050000""";
 
      String actual_display = format("""
                     Hero name: %s
@@ -134,10 +133,10 @@ class WarriorTest {
                     Total Strength: %d
                     Total Dexterity: %d
                     Total Intelligence: %d
-                    Damage: %f""", warrior.getHeroName(),
-                    warrior.getClassName(), warrior.getHeroLevel(),
-                     warrior.getLevelAttributes().getStrength(), warrior.getLevelAttributes().getDexterity(),
-                     warrior.getLevelAttributes().getIntelligence(), warrior.damage());
+                    Damage: %f""", warrior.heroName,
+                    warrior.className, warrior.heroLevel,
+                     warrior.levelAttributes.getStrength(), warrior.levelAttributes.getDexterity(),
+                     warrior.levelAttributes.getIntelligence(), warrior.damage());
 
      Assertions.assertEquals(expected_display, actual_display);
     }
@@ -153,37 +152,28 @@ class WarriorTest {
                       Dexterity: %d
                       Intelligence: %d
                       """,
-                5, 2, 1);
+                warrior.levelAttributes.getStrength(),
+                warrior.levelAttributes.getDexterity(),
+                warrior.levelAttributes.getIntelligence());
 
-        String actual_withNoEquipment = format("""
-                      Strength: %d
-                      Dexterity: %d
-                      Intelligence: %d
-                      """,
-                warrior.getLevelAttributes().getStrength(),
-                warrior.getLevelAttributes().getDexterity(),
-                warrior.getLevelAttributes().getIntelligence());
+        String actual_withNoEquipment = warrior.totalHeroAttributes();
 
         /* Assertion without any equipment */
         Assertions.assertEquals(expected_withNoEquipment, actual_withNoEquipment);
 
 
-        warrior.equipItem(bronze_plate_chest);
+        warrior.equipItem(bronze_plate_helmet);
         String expected_withOnePiece = format("""
                       Strength: %d
                       Dexterity: %d
                       Intelligence: %d
                       """,
-                9, 4, 2);
+                warrior.levelAttributes.getStrength(),
+                warrior.levelAttributes.getDexterity(),
+                warrior.levelAttributes.getIntelligence());
 
-        String actual_withOnePiece = format("""
-                      Strength: %d
-                      Dexterity: %d
-                      Intelligence: %d
-                      """,
-                warrior.getLevelAttributes().getStrength(),
-                warrior.getLevelAttributes().getDexterity(),
-                warrior.getLevelAttributes().getIntelligence());
+        String actual_withOnePiece = warrior.totalHeroAttributes();
+
         /* Assertion with one piece of equipment */
         Assertions.assertEquals(expected_withOnePiece, actual_withOnePiece);
         //two pieces of equipment
@@ -194,17 +184,11 @@ class WarriorTest {
                       Dexterity: %d
                       Intelligence: %d
                       """,
-                309, 104, 52);
+                warrior.levelAttributes.getStrength(),
+                warrior.levelAttributes.getDexterity(),
+                warrior.levelAttributes.getIntelligence());
 
-        String actual_withTwoPieces = format("""
-                      Strength: %d
-                      Dexterity: %d
-                      Intelligence: %d
-                      """,
-                warrior.getLevelAttributes().getStrength(),
-                warrior.getLevelAttributes().getDexterity(),
-                warrior.getLevelAttributes().getIntelligence());
-
+        String actual_withTwoPieces = warrior.totalHeroAttributes();
         /* Assertion with two pieces of equipment */
         Assertions.assertEquals(expected_withTwoPieces, actual_withTwoPieces);
 
@@ -215,16 +199,11 @@ class WarriorTest {
                       Dexterity: %d
                       Intelligence: %d
                       """,
-                13, 5, 3);
+                warrior.levelAttributes.getStrength(),
+                warrior.levelAttributes.getDexterity(),
+                warrior.levelAttributes.getIntelligence());
 
-        String actual_withReplacedPiece = format("""
-                      Strength: %d
-                      Dexterity: %d
-                      Intelligence: %d
-                      """,
-                warrior.getLevelAttributes().getStrength(),
-                warrior.getLevelAttributes().getDexterity(),
-                warrior.getLevelAttributes().getIntelligence());
+        String actual_withReplacedPiece = warrior.totalHeroAttributes();
 
         /* Assertion with a replaced piece of equipment */
         Assertions.assertEquals(expected_withReplacedPiece, actual_withReplacedPiece);
@@ -235,25 +214,29 @@ class WarriorTest {
     @Test
     public void test_levelUP(){
 
+        int expectedStrength= warrior.levelAttributes.getStrength();
+        int expectedDexterity = warrior.levelAttributes.getDexterity();
+        int expectedIntelligence = warrior.levelAttributes.getIntelligence();
+
         warrior.levelUp(10);
 
-        int expectedLevel = 11;
+        int expectedLevel_afterLevelUp = warrior.heroLevel += 10;
         int actualLevel = warrior.getHeroLevel();
 
-        int expectedStrength = 35;
+        int expectedStrength_afterLevelUp = expectedStrength + 10 * warrior.attributesPerLevel[0];
         int actualStrength = warrior.getLevelAttributes().getStrength();
 
-        int expectedDexterity = 22;
+        int expectedDexterity_afterLevelUp = expectedDexterity + 10 * warrior.attributesPerLevel[1];
         int actualDexterity = warrior.getLevelAttributes().getDexterity();
 
-        int expectedIntelligence = 11;
+        int expectedIntelligence_afterLevelUp = expectedIntelligence + 10 * warrior.attributesPerLevel[2];
         int actualIntelligence = warrior.getLevelAttributes().getIntelligence();
 
 
-        Assertions.assertEquals(expectedLevel, actualLevel);
-        Assertions.assertEquals(expectedStrength, actualStrength);
-        Assertions.assertEquals(expectedDexterity, actualDexterity);
-        Assertions.assertEquals(expectedIntelligence, actualIntelligence);
+        Assertions.assertEquals(expectedLevel_afterLevelUp, actualLevel);
+        Assertions.assertEquals(expectedStrength_afterLevelUp, actualStrength);
+        Assertions.assertEquals(expectedDexterity_afterLevelUp, actualDexterity);
+        Assertions.assertEquals(expectedIntelligence_afterLevelUp, actualIntelligence);
 
     }
 
@@ -264,7 +247,7 @@ class WarriorTest {
     @Test
     public void test_GetHeroName(){
 
-        String expected = "Garrosh Hellscream";
+        String expected = warrior.heroName;
         String actual = warrior.getHeroName();
         Assertions.assertEquals(expected, actual);
     }
@@ -272,7 +255,7 @@ class WarriorTest {
     @Test
     public void test_GetHeroClassName() {
 
-        String expected = "Warrior";
+        String expected = warrior.className;
         String actual = warrior.getClassName();
         Assertions.assertEquals(expected, actual);
 
@@ -281,7 +264,7 @@ class WarriorTest {
     @Test
     public void test_GetHeroLevel() {
 
-        int expected = 1;
+        int expected = warrior.heroLevel;
         int actual = warrior.getHeroLevel();
         Assertions.assertEquals(expected, actual);
     }
@@ -289,30 +272,47 @@ class WarriorTest {
     @Test
     public void test_IncreaseHeroLevel() {
 
-        warrior.increaseHeroLevel(4);
-        int expected = 5;
+        int expected = warrior.heroLevel;
+        warrior.increaseHeroLevel(7);
+        int expected2 = expected + 7;
         int actual = warrior.getHeroLevel();
-        Assertions.assertEquals(expected, actual);
+
+        Assertions.assertEquals(expected2, actual);
     }
 
     @Test
-    public void test_GetHeroEquipment() {
+    public void test_GetHeroEquipment() throws InvalidArmorException, InvalidWeaponException {
 
-        HashMap<Slot, Item> expected_equipment = new HashMap<>();
-        expected_equipment.put(Slot.HEAD, null);
-        expected_equipment.put(Slot.BODY, null);
-        expected_equipment.put(Slot.LEGS, null);
-        expected_equipment.put(Slot.WEAPON, null);
+        HashMap<Slot, Item> expected_equipment = warrior.heroEquipment;
 
         HashMap<Slot, Item> actual_equipment = warrior.getHeroEquipment();
 
+        /* Assertion without equipment */
         Assertions.assertEquals(expected_equipment, actual_equipment);
+
+
+        HashMap<Slot, Item> expected_equipment_afterEquipping = new HashMap<>();
+        expected_equipment_afterEquipping.put(Slot.HEAD,bronze_plate_helmet);
+        expected_equipment_afterEquipping.put(Slot.BODY,icebane_breastplate);
+        expected_equipment_afterEquipping.put(Slot.LEGS,glad_legguards);
+        expected_equipment_afterEquipping.put(Slot.WEAPON,ashbringer);
+
+        warrior.levelUp(100);  // using levelUp() to equip higher level Items
+        warrior.equipItem(icebane_breastplate);
+        warrior.equipItem(bronze_plate_helmet);
+        warrior.equipItem(glad_legguards);
+        warrior.equipItem(ashbringer);
+
+        HashMap<Slot, Item> actual_equipment_afterEquipping = warrior.getHeroEquipment();
+
+        /* Assertion with equipment */
+        Assertions.assertEquals(expected_equipment_afterEquipping, actual_equipment_afterEquipping);
     }
 
     @Test
     public void test_GetValidArmor() {
 
-        ArmorType armorType_expected = ArmorType.PLATE;
+        ArmorType armorType_expected = warrior.validArmor;
         ArmorType armorType_actual = warrior.getValidArmor();
 
         Assertions.assertEquals(armorType_expected, armorType_actual);
@@ -321,11 +321,7 @@ class WarriorTest {
     @Test
     public void test_GetValidWeapon() {
 
-        ArrayList<WeaponType> weaponTypes_expected = new ArrayList<>();
-        weaponTypes_expected.add(WeaponType.AXE);
-        weaponTypes_expected.add(WeaponType.SWORD);
-        weaponTypes_expected.add(WeaponType.HAMMER);
-
+        ArrayList<WeaponType> weaponTypes_expected = warrior.validWeapon;
         ArrayList<WeaponType> weaponTypes_actual = warrior.getValidWeapon();
 
         Assertions.assertEquals(weaponTypes_expected, weaponTypes_actual);
@@ -333,7 +329,7 @@ class WarriorTest {
     @Test
     public void test_GetLevelAttributes() {
 
-        HeroAttributes heroAttributes_expected = new HeroAttributes(5,2,1);
+        HeroAttributes heroAttributes_expected = warrior.levelAttributes;
         HeroAttributes heroAttributes_actual = warrior.getLevelAttributes();
 
         Assertions.assertEquals(heroAttributes_expected, heroAttributes_actual);
@@ -342,11 +338,12 @@ class WarriorTest {
     @Test
     public void test_GetPrimary() {
 
-        int expected_primary = 5;
-        int actual_primary = Math.max(Math.max(
-                warrior.getLevelAttributes().getStrength(),
-                warrior.getLevelAttributes().getDexterity()),
-                warrior.getLevelAttributes().getIntelligence());
+        int expected_primary = Math.max(Math.max(
+                        warrior.getLevelAttributes().getStrength(),
+                        warrior.getLevelAttributes().getDexterity()),
+                        warrior.getLevelAttributes().getIntelligence());
+
+        int actual_primary = warrior.getPrimary();
 
         Assertions.assertEquals(expected_primary, actual_primary);
 

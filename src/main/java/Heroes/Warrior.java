@@ -4,36 +4,27 @@ import Items.ArmorType;
 import Items.WeaponType;
 import java.util.ArrayList;
 
-public class Warrior extends Hero{
+public class Warrior extends Hero {
 
 
-/* Inherited Constructor */
+/* Inherited Constructor with Warrior
+class specific fields from
+project documentation*/
     public Warrior(String heroName) {
         super(heroName);
-        this.levelAttributes = new HeroAttributes(5,2,1);
+        /* Specified starting HeroAttributes for Warrior class */
+        this.levelAttributes = new HeroAttributes(5, 2, 1);
+        /* Specified attributes gained per level for Warrior class */
+        this.attributesPerLevel = new int[]{3, 2, 1};
+        /* Warriors can only equip Plate armor */
         this.validArmor = ArmorType.PLATE;
+        /* Warriors can equip Axes, Swords and Hammers */
         this.validWeapon = new ArrayList<>();
         validWeapon.add(WeaponType.AXE);
         validWeapon.add(WeaponType.SWORD);
         validWeapon.add(WeaponType.HAMMER);
-        this.attributesPerLevel = new int[]{3,2,1};
 
     }
 
-/* Overridden Method */
-
-//    @Override
-//    public void levelUp(int levelsGained) {
-//
-//        super.increaseHeroLevel(levelsGained);
-//        getLevelAttributes().increaseStrength(3*levelsGained);
-//        getLevelAttributes().increaseDexterity(2*levelsGained);
-//        getLevelAttributes().increaseIntelligence(levelsGained);
-//
-//        System.out.printf("""
-//                Congrats! You leveled up!
-//                You are now level %d
-//                """,getHeroLevel());
-//    }
-
 }
+

@@ -3,7 +3,8 @@ package Items;
 import Heroes.HeroAttributes;
 
 public abstract class Item {
-    /* Item Fields */
+
+/* Item Fields */
 
     /* Field for Item's name. */
     protected String itemName;
@@ -22,10 +23,15 @@ public abstract class Item {
     /* Field for Item's Slot. */
     protected Slot slot;
 
+    /* Field for Item's WeaponType.
+    Specific for Weapon. */
     protected WeaponType weaponType;
+
+    /* Field for Item's ArmorType.
+    Specific for Armor. */
     protected ArmorType armorType;
 
-    /* Item Fields End */
+/* Item Fields End */
 
 /* Constructors */
 
@@ -57,48 +63,57 @@ public abstract class Item {
         return itemLevel;
     }
 
-    /* Getter to return Item's Slot.
-    Specific for Weapon subclass.*/
+    /* Getter to return Item's Slot.*/
     public Slot getSlot() {
         return slot;
     }
 
+    /* Getter to return Item's HeroAttributes.
+    Specific to Armor. */
     public HeroAttributes getArmorAttributes() {
         return armorAttributes;
     }
 
-    /* Getter to return Item's Strength
-        Overridden by Armor subclass. */
+    /* Getter to return Item's Strength.
+    Specific to Armor. */
     public int getStrength() {
-        return getArmorAttributes().getStrength();
+        return armorAttributes.getStrength();
     }
 
-    /* Getter to return Item's Dexterity
-    Overridden by Armor subclass. */
+    /* Getter to return Item's Dexterity.
+    Specific to Armor. */
     public int getDexterity() {
-        return getArmorAttributes().getDexterity();
+        return armorAttributes.getDexterity();
     }
 
-    /* Getter to return Item's Intelligence
-    Overridden by Armor subclass. */
+    /* Getter to return Item's Intelligence.
+    Specific to Armor.*/
     public int getIntelligence() {
-        return getArmorAttributes().getIntelligence();
+        return armorAttributes.getIntelligence();
     }
 
-    /* Getter to return Item's damage.
-    Specific for Weapon subclass. */
-    public int getWeaponDamage(){
-        return weaponDamage;
-    }
-
+    /* Getter to return Item's ArmorType.
+    Specific to Armor. */
     public ArmorType getArmorType() {
         return armorType;
     }
 
+    /* Getter to return Item's damage.
+    Specific to Weapon.*/
+    public int getWeaponDamage(){
+        return weaponDamage;
+    }
+
+
+    /* Getter to return Item's WeaponType.
+    Specific to Weapon. */
     public WeaponType getWeaponType() {
         return weaponType;
     }
 
+
+    /* Overriding equals() as it
+    is required for Testing*/
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);

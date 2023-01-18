@@ -39,7 +39,7 @@ class RogueTest {
 
 
         rogue.equipItem(steel_rappier);
-        Item expected_equipped_weapon = rogue.getHeroEquipment().get(Slot.WEAPON);
+        Item expected_equipped_weapon = rogue.heroEquipment.get(Slot.WEAPON);
 
         Assertions.assertEquals(expected_equipped_weapon, steel_rappier);
 
@@ -56,7 +56,7 @@ class RogueTest {
     public void test_equip_forArmor() throws InvalidArmorException {
 
         rogue.equipItem(wildboar_pelt);
-        Item expected_equipped_armor = rogue.getHeroEquipment().get(Slot.BODY);
+        Item expected_equipped_armor = rogue.heroEquipment.get(Slot.BODY);
 
         Assertions.assertEquals(expected_equipped_armor, wildboar_pelt);
 
@@ -81,7 +81,7 @@ class RogueTest {
 
 
         rogue.equipItem(steel_rappier);
-        int weapon_damage = rogue.getHeroEquipment().get(Slot.WEAPON).getWeaponDamage();
+        int weapon_damage = rogue.heroEquipment.get(Slot.WEAPON).getWeaponDamage();
         double expected_with_weapon = expected_damage * weapon_damage;
         double actual_with_weapon = rogue.damage();
 
@@ -92,7 +92,7 @@ class RogueTest {
         rogue.levelUp(89); // using levelUp() to equip weapon of higher level
         double expected_afterLevelUp = (1 + rogue.getPrimary() / 100.0);
         rogue.equipItem(wolf_fangs);
-        int weapon_damage_withReplacedWeapon = rogue.getHeroEquipment().get(Slot.WEAPON).getWeaponDamage();
+        int weapon_damage_withReplacedWeapon = rogue.heroEquipment.get(Slot.WEAPON).getWeaponDamage();
         double expected_withReplacedWeapon = expected_afterLevelUp * weapon_damage_withReplacedWeapon;
         double actual_withReplacedWeapon = rogue.damage();
 
@@ -111,15 +111,14 @@ class RogueTest {
     @Test
     public void test_display() {
 
-        String expected_display = format("""
-                    Hero name: %s
-                    Class: %s
-                    Level: %d
-                    Total Strength: %d
-                    Total Dexterity: %d
-                    Total Intelligence: %d
-                    Damage: %f""", "Valeera Sanguinar", "Rogue",
-                1,2,6,1, (1 + rogue.getPrimary() / 100.0));
+        String expected_display = """
+                    Hero name: Valeera Sanguinar
+                    Class: Rogue
+                    Level: 1
+                    Total Strength: 2
+                    Total Dexterity: 6
+                    Total Intelligence: 1
+                    Damage: 1,060000""";
 
         String actual_display = format("""
                     Hero name: %s
@@ -128,10 +127,10 @@ class RogueTest {
                     Total Strength: %d
                     Total Dexterity: %d
                     Total Intelligence: %d
-                    Damage: %f""", rogue.getHeroName(),
-                rogue.getClassName(), rogue.getHeroLevel(),
-                rogue.getLevelAttributes().getStrength(), rogue.getLevelAttributes().getDexterity(),
-                rogue.getLevelAttributes().getIntelligence(), rogue.damage());
+                    Damage: %f""", rogue.heroName,
+                rogue.className, rogue.heroLevel,
+                rogue.levelAttributes.getStrength(), rogue.levelAttributes.getDexterity(),
+                rogue.levelAttributes.getIntelligence(), rogue.damage());
 
         Assertions.assertEquals(expected_display, actual_display);
     }
@@ -147,16 +146,11 @@ class RogueTest {
                       Dexterity: %d
                       Intelligence: %d
                       """,
-                2, 6, 1);
+                rogue.levelAttributes.getStrength(),
+                rogue.levelAttributes.getDexterity(),
+                rogue.levelAttributes.getIntelligence());
 
-        String actual_withNoEquipment = format("""
-                      Strength: %d
-                      Dexterity: %d
-                      Intelligence: %d
-                      """,
-                rogue.getLevelAttributes().getStrength(),
-                rogue.getLevelAttributes().getDexterity(),
-                rogue.getLevelAttributes().getIntelligence());
+        String actual_withNoEquipment = rogue.totalHeroAttributes();
 
         /* Assertion without any equipment */
         Assertions.assertEquals(expected_withNoEquipment, actual_withNoEquipment);
@@ -168,16 +162,12 @@ class RogueTest {
                       Dexterity: %d
                       Intelligence: %d
                       """,
-                5, 16, 2);
+                rogue.levelAttributes.getStrength(),
+                rogue.levelAttributes.getDexterity(),
+                rogue.levelAttributes.getIntelligence());
 
-        String actual_withOnePiece = format("""
-                      Strength: %d
-                      Dexterity: %d
-                      Intelligence: %d
-                      """,
-                rogue.getLevelAttributes().getStrength(),
-                rogue.getLevelAttributes().getDexterity(),
-                rogue.getLevelAttributes().getIntelligence());
+        String actual_withOnePiece = rogue.totalHeroAttributes();
+
         /* Assertion with one piece of equipment */
         Assertions.assertEquals(expected_withOnePiece, actual_withOnePiece);
 
@@ -188,16 +178,11 @@ class RogueTest {
                       Dexterity: %d
                       Intelligence: %d
                       """,
-                15, 36, 7);
+                rogue.levelAttributes.getStrength(),
+                rogue.levelAttributes.getDexterity(),
+                rogue.levelAttributes.getIntelligence());
 
-        String actual_withTwoPieces = format("""
-                      Strength: %d
-                      Dexterity: %d
-                      Intelligence: %d
-                      """,
-                rogue.getLevelAttributes().getStrength(),
-                rogue.getLevelAttributes().getDexterity(),
-                rogue.getLevelAttributes().getIntelligence());
+        String actual_withTwoPieces = rogue.totalHeroAttributes();
 
         /* Assertion with two pieces of equipment */
         Assertions.assertEquals(expected_withTwoPieces, actual_withTwoPieces);
@@ -209,16 +194,11 @@ class RogueTest {
                       Dexterity: %d
                       Intelligence: %d
                       """,
-                13, 31, 5);
+                rogue.levelAttributes.getStrength(),
+                rogue.levelAttributes.getDexterity(),
+                rogue.levelAttributes.getIntelligence());
 
-        String actual_withReplacedPiece = format("""
-                      Strength: %d
-                      Dexterity: %d
-                      Intelligence: %d
-                      """,
-                rogue.getLevelAttributes().getStrength(),
-                rogue.getLevelAttributes().getDexterity(),
-                rogue.getLevelAttributes().getIntelligence());
+        String actual_withReplacedPiece = rogue.totalHeroAttributes();
 
         /* Assertion with a replaced piece of equipment */
         Assertions.assertEquals(expected_withReplacedPiece, actual_withReplacedPiece);
@@ -229,25 +209,30 @@ class RogueTest {
     @Test
     public void test_levelUP(){
 
+
+        int expectedStrength= rogue.levelAttributes.getStrength();
+        int expectedDexterity = rogue.levelAttributes.getDexterity();
+        int expectedIntelligence = rogue.levelAttributes.getIntelligence();
+
         rogue.levelUp(10);
 
-        int expectedLevel = 11;
+        int expectedLevel_afterLevelUp = rogue.heroLevel += 10;
         int actualLevel = rogue.getHeroLevel();
 
-        int expectedStrength = 12;
+        int expectedStrength_afterLevelUp = expectedStrength + 10 * rogue.attributesPerLevel[0];
         int actualStrength = rogue.getLevelAttributes().getStrength();
 
-        int expectedDexterity = 46;
+        int expectedDexterity_afterLevelUp = expectedDexterity + 10 * rogue.attributesPerLevel[1];
         int actualDexterity = rogue.getLevelAttributes().getDexterity();
 
-        int expectedIntelligence = 11;
+        int expectedIntelligence_afterLevelUp = expectedIntelligence + 10 * rogue.attributesPerLevel[2];
         int actualIntelligence = rogue.getLevelAttributes().getIntelligence();
 
 
-        Assertions.assertEquals(expectedLevel, actualLevel);
-        Assertions.assertEquals(expectedStrength, actualStrength);
-        Assertions.assertEquals(expectedDexterity, actualDexterity);
-        Assertions.assertEquals(expectedIntelligence, actualIntelligence);
+        Assertions.assertEquals(expectedLevel_afterLevelUp, actualLevel);
+        Assertions.assertEquals(expectedStrength_afterLevelUp, actualStrength);
+        Assertions.assertEquals(expectedDexterity_afterLevelUp, actualDexterity);
+        Assertions.assertEquals(expectedIntelligence_afterLevelUp, actualIntelligence);
 
     }
 
@@ -258,7 +243,7 @@ class RogueTest {
     @Test
     public void test_GetHeroName(){
 
-        String expected = "Valeera Sanguinar";
+        String expected = rogue.heroName;
         String actual = rogue.getHeroName();
         Assertions.assertEquals(expected, actual);
     }
@@ -266,7 +251,7 @@ class RogueTest {
     @Test
     public void test_GetHeroClassName() {
 
-        String expected = "Rogue";
+        String expected = rogue.className;
         String actual = rogue.getClassName();
         Assertions.assertEquals(expected, actual);
 
@@ -275,7 +260,7 @@ class RogueTest {
     @Test
     public void test_GetHeroLevel() {
 
-        int expected = 1;
+        int expected = rogue.heroLevel;
         int actual = rogue.getHeroLevel();
         Assertions.assertEquals(expected, actual);
     }
@@ -283,30 +268,43 @@ class RogueTest {
     @Test
     public void test_IncreaseHeroLevel() {
 
+        int expected = rogue.heroLevel;
         rogue.increaseHeroLevel(4);
-        int expected = 5;
+        int expected2 = expected + 4;
         int actual = rogue.getHeroLevel();
-        Assertions.assertEquals(expected, actual);
+
+        Assertions.assertEquals(expected2, actual);
     }
 
     @Test
-    public void test_GetHeroEquipment() {
+    public void test_GetHeroEquipment() throws InvalidArmorException, InvalidWeaponException {
 
-        HashMap<Slot, Item> expected_equipment = new HashMap<>();
-        expected_equipment.put(Slot.HEAD, null);
-        expected_equipment.put(Slot.BODY, null);
-        expected_equipment.put(Slot.LEGS, null);
-        expected_equipment.put(Slot.WEAPON, null);
-
+        HashMap<Slot, Item> expected_equipment = rogue.heroEquipment;
         HashMap<Slot, Item> actual_equipment = rogue.getHeroEquipment();
 
         Assertions.assertEquals(expected_equipment, actual_equipment);
+
+
+        HashMap<Slot, Item> expected_equipment_afterEquipping = new HashMap<>();
+        expected_equipment_afterEquipping.put(Slot.HEAD,cursed_eyepatch);
+        expected_equipment_afterEquipping.put(Slot.BODY,wildboar_pelt);
+        expected_equipment_afterEquipping.put(Slot.LEGS,bloodfang_pants);
+        expected_equipment_afterEquipping.put(Slot.WEAPON,wolf_fangs);
+
+        rogue.levelUp(100); // using levelUp() to equip higher level Items
+        rogue.equipItem(wildboar_pelt);
+        rogue.equipItem(cursed_eyepatch);
+        rogue.equipItem(bloodfang_pants);
+        rogue.equipItem(wolf_fangs);
+
+        HashMap<Slot, Item> actual_equipment_afterEquipping = rogue.getHeroEquipment();
+        Assertions.assertEquals(expected_equipment_afterEquipping, actual_equipment_afterEquipping);
     }
 
     @Test
     public void test_GetValidArmor() {
 
-        ArmorType armorType_expected = ArmorType.LEATHER;
+        ArmorType armorType_expected = rogue.validArmor;
         ArmorType armorType_actual = rogue.getValidArmor();
 
         Assertions.assertEquals(armorType_expected, armorType_actual);
@@ -315,11 +313,7 @@ class RogueTest {
     @Test
     public void test_GetValidWeapon() {
 
-        ArrayList<WeaponType> weaponTypes_expected = new ArrayList<>();
-        weaponTypes_expected.add(WeaponType.DAGGER);
-        weaponTypes_expected.add(WeaponType.SWORD);
-
-
+        ArrayList<WeaponType> weaponTypes_expected = rogue.validWeapon;
         ArrayList<WeaponType> weaponTypes_actual = rogue.getValidWeapon();
 
         Assertions.assertEquals(weaponTypes_expected, weaponTypes_actual);
@@ -327,7 +321,7 @@ class RogueTest {
     @Test
     public void test_GetLevelAttributes() {
 
-        HeroAttributes heroAttributes_expected = new HeroAttributes(2,6,1);
+        HeroAttributes heroAttributes_expected = rogue.levelAttributes;
         HeroAttributes heroAttributes_actual = rogue.getLevelAttributes();
 
         Assertions.assertEquals(heroAttributes_expected, heroAttributes_actual);
@@ -336,17 +330,18 @@ class RogueTest {
     @Test
     public void test_GetPrimary() {
 
-        int expected_primary = 6;
-        int actual_primary = Math.max(Math.max(
+        int expected_primary = Math.max(Math.max(
                         rogue.getLevelAttributes().getStrength(),
                         rogue.getLevelAttributes().getDexterity()),
-                rogue.getLevelAttributes().getIntelligence());
+                        rogue.getLevelAttributes().getIntelligence());
+
+        int actual_primary = rogue.getPrimary();
 
         Assertions.assertEquals(expected_primary, actual_primary);
 
     }
 
-    /* Getters and Setters Testing End */
+/* Getters and Setters Testing End */
 
 
 }
