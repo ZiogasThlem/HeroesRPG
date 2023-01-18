@@ -2,7 +2,11 @@ package Heroes;
 
 import Exceptions.InvalidArmorException;
 import Exceptions.InvalidWeaponException;
+import Heroes.subclasses.Ranger;
 import Items.*;
+import Items.enums.ArmorType;
+import Items.enums.Slot;
+import Items.enums.WeaponType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +28,7 @@ class RangerTest {
     Weapon deaths_whisper = new Weapon("Death's Whisper",60, 1000, WeaponType.BOW);
 
     Armor trainers_mail_chestpiece = new Armor("Trainer's Mail Chestpiece", 1, Slot.BODY,
-            new HeroAttributes(2,8,1),ArmorType.MAIL);
+            new HeroAttributes(2,8,1), ArmorType.MAIL);
 
     Armor cryptstalkers_helmet = new Armor("Cryptstalker's Helmet", 100, Slot.HEAD,
             new HeroAttributes(200,2500,100),ArmorType.MAIL);
@@ -47,7 +51,7 @@ class RangerTest {
     @Test
     public void test_equip_forWeapons() throws InvalidWeaponException {
 
-
+        /* Testing by attempting to equip a valid weapon */
         ranger.equipItem(training_bow);
         Item expected_equipped_weapon = ranger.heroEquipment.get(Slot.WEAPON);
 
@@ -65,6 +69,7 @@ class RangerTest {
     @Test
     public void test_equip_forArmor() throws InvalidArmorException {
 
+        /* Testing by attempting to equip a valid piece of armor */
         ranger.equipItem(trainers_mail_chestpiece);
         Item expected_equipped_armor = ranger.heroEquipment.get(Slot.BODY);
 
@@ -83,14 +88,15 @@ class RangerTest {
     @Test
     public void test_damage() throws InvalidWeaponException, InvalidArmorException {
 
+         /* From the first part of damage() method, testing damage
+        with just the primary attribute through the given equation. */
         double expected_damage = (1 + ranger.getPrimary() / 100.0);
-
         double actual_damage = ranger.damage();
 
         /*Assertion without weapon */
         Assertions.assertEquals(expected_damage, actual_damage);
 
-
+        /* equipping weapon and testing */
         ranger.equipItem(training_bow);
         int weapon_damage = ranger.heroEquipment.get(Slot.WEAPON).getWeaponDamage();
         double expected_with_weapon = expected_damage * weapon_damage;
@@ -99,7 +105,7 @@ class RangerTest {
         /*Assertion with weapon */
         Assertions.assertEquals(expected_with_weapon, actual_with_weapon);
 
-
+        /* replacing weapon  and testing again */
         ranger.levelUp(99); // using levelUp() to equip weapon of higher level
         double expected_afterLevelUp = (1 + ranger.getPrimary() / 100.0);
         ranger.equipItem(deaths_whisper);
@@ -110,6 +116,7 @@ class RangerTest {
         /*Assertion with replaced weapon */
         Assertions.assertEquals(expected_withReplacedWeapon, actual_withReplacedWeapon);
 
+        /* equipping piece of armor and testing */
         ranger.equipItem(cryptstalkers_helmet);
         double expected_afterEquippingArmor = (1 + ranger.getPrimary() / 100.0) * weapon_damage_withReplacedWeapon;
         double actual_afterEquippingArmor = ranger.damage();
@@ -122,6 +129,8 @@ class RangerTest {
     @Test
     public void test_display() {
 
+        /* Forming a multiline string with
+        values given from the created object. */
         String expected_display = """
                     Hero name: Sylvanas Windrunner
                     Class: Ranger
@@ -131,6 +140,8 @@ class RangerTest {
                     Total Intelligence: 1
                     Damage: 1,070000""";
 
+        /* Forming a second multiline string with
+        values taken from respective fields. */
         String actual_display = format("""
                     Hero name: %s
                     Class: %s
@@ -151,7 +162,7 @@ class RangerTest {
     @Test
     void test_totalHeroAttributes() throws InvalidArmorException {
 
-
+        /* testing without any equipment */
         String expected_withNoEquipment = format("""
                       Strength: %d
                       Dexterity: %d
@@ -166,7 +177,7 @@ class RangerTest {
         /* Assertion without any equipment */
         Assertions.assertEquals(expected_withNoEquipment, actual_withNoEquipment);
 
-
+        /* testing by equipping first piece of equipment */
         ranger.equipItem(trainers_mail_chestpiece);
         String expected_withOnePiece = format("""
                       Strength: %d
@@ -182,7 +193,7 @@ class RangerTest {
         /* Assertion with one piece of equipment */
         Assertions.assertEquals(expected_withOnePiece, actual_withOnePiece);
 
-
+        /* testing by equipping a second piece of equipment */
         ranger.equipItem(chainmail_legguards);
         String expected_withTwoPieces = format("""
                       Strength: %d
@@ -198,7 +209,7 @@ class RangerTest {
         /* Assertion with two pieces of equipment */
         Assertions.assertEquals(expected_withTwoPieces, actual_withTwoPieces);
 
-
+        /* testing by replacing previous piece of equipment */
         ranger.equipItem(huntsmans_greaves);
         String expected_withReplacedPiece = format("""
                       Strength: %d
@@ -219,6 +230,11 @@ class RangerTest {
     /* Testing levelUP() */
     @Test
     public void test_levelUP(){
+
+        /* Testing in a similar way with Setter methods of HeroAttributesTest.
+        Getting the original value from getter to expected, adding (or subtracting)
+        n to original value , adding (or subtracting) n to expected_afterLevelUp and multiplying it
+        by the amount define by attributesPerLevel Array for each class. */
 
         int expectedStrength= ranger.levelAttributes.getStrength();
         int expectedDexterity = ranger.levelAttributes.getDexterity();
@@ -250,6 +266,7 @@ class RangerTest {
 
 /* Getters and Setters Testing */
 
+    /* Testing getHeroName() */
     @Test
     public void test_GetHeroName(){
 
@@ -258,6 +275,7 @@ class RangerTest {
         Assertions.assertEquals(expected, actual);
     }
 
+    /* Testing getHeroClassName() */
     @Test
     public void test_GetHeroClassName() {
 
@@ -266,7 +284,7 @@ class RangerTest {
         Assertions.assertEquals(expected, actual);
 
     }
-
+    /* Testing getHeroLevel() */
     @Test
     public void test_GetHeroLevel() {
 
@@ -275,6 +293,7 @@ class RangerTest {
         Assertions.assertEquals(expected, actual);
     }
 
+    /* Testing increaseHeroLevel() */
     @Test
     public void test_IncreaseHeroLevel() {
 
@@ -286,15 +305,19 @@ class RangerTest {
         Assertions.assertEquals(expected2, actual);
     }
 
+    /* Testing getHeroEquipment() */
     @Test
     public void test_GetHeroEquipment() throws InvalidWeaponException, InvalidArmorException {
 
+        /* First test with empty equipment */
         HashMap<Slot, Item> expected_equipment = ranger.heroEquipment;
         HashMap<Slot, Item> actual_equipment = ranger.getHeroEquipment();
 
         Assertions.assertEquals(expected_equipment, actual_equipment);
 
 
+        /* Second test with full set of valid equipment
+        with created Armor and Weapon objects*/
         HashMap<Slot, Item> expected_equipment_afterEquipping = new HashMap<>();
         expected_equipment_afterEquipping.put(Slot.HEAD,cryptstalkers_helmet);
         expected_equipment_afterEquipping.put(Slot.BODY,trainers_mail_chestpiece);
@@ -311,6 +334,7 @@ class RangerTest {
         Assertions.assertEquals(expected_equipment_afterEquipping, actual_equipment_afterEquipping);
     }
 
+    /* Testing getValidArmor() */
     @Test
     public void test_GetValidArmor() {
 
@@ -320,6 +344,7 @@ class RangerTest {
         Assertions.assertEquals(armorType_expected, armorType_actual);
     }
 
+    /* Testing getValidWeapon() */
     @Test
     public void test_GetValidWeapon() {
 
@@ -329,6 +354,8 @@ class RangerTest {
 
         Assertions.assertEquals(weaponTypes_expected, weaponTypes_actual);
     }
+
+    /* Testing getLevelAttributes() */
     @Test
     public void test_GetLevelAttributes() {
 
@@ -338,6 +365,7 @@ class RangerTest {
         Assertions.assertEquals(heroAttributes_expected, heroAttributes_actual);
     }
 
+    /* Testing getPrimary() */
     @Test
     public void test_GetPrimary() {
 

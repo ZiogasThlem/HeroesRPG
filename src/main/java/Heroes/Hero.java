@@ -2,6 +2,10 @@ package Heroes;
 
 import Exceptions.*;
 import Items.*;
+import Items.enums.ArmorType;
+import Items.enums.Slot;
+import Items.enums.WeaponType;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -166,7 +170,8 @@ public abstract class Hero {
 
     }
 
-    /*Returning the value of the total of each Hero Attribute.*/
+    /*Returning the value of the total of each Hero Attribute
+    at any given occurrence. */
     public String totalHeroAttributes(){
 
         return format("""
@@ -271,7 +276,7 @@ public abstract class Hero {
     /*Getters and Setters End*/
 
     /* Overriding equals() as it
-    is required for Testing*/
+    is required for Testing */
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);

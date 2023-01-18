@@ -1,10 +1,17 @@
-package Heroes;
+package Heroes.subclasses;
 
-import Items.ArmorType;
-import Items.WeaponType;
+import Heroes.Hero;
+import Heroes.HeroAttributes;
+import Items.enums.ArmorType;
+import Items.enums.WeaponType;
 import java.util.ArrayList;
 
-public class Ranger extends Hero{
+/* Only a single spark is enough for the Ranger to track her target from hundreds
+of meters away. With vision of an eagle, velocity of a tiger and slyness of a fox,
+a Ranger's arrows are considered a certain death. An excellent marksman, moreover
+a fearless companion to her teammates, assisting them from distance. */
+
+public class Ranger extends Hero {
 
 
 /* Inherited Constructor with Ranger

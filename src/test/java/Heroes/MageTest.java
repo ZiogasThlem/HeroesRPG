@@ -2,7 +2,11 @@ package Heroes;
 
 import Exceptions.InvalidArmorException;
 import Exceptions.InvalidWeaponException;
+import Heroes.subclasses.Mage;
 import Items.*;
+import Items.enums.ArmorType;
+import Items.enums.Slot;
+import Items.enums.WeaponType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +28,7 @@ class MageTest {
     Weapon shiv = new Weapon("Shiv", 1, 15, WeaponType.DAGGER);
 
     Armor linen_robe = new Armor("Linen Robe", 1, Slot.BODY,
-            new HeroAttributes(1,1,10 ),ArmorType.CLOTH);
+            new HeroAttributes(1,1,10 ), ArmorType.CLOTH);
     Armor silver_plate_chest = new Armor("Bronze Plate Chest", 1, Slot.BODY,
             new HeroAttributes(40,25,5),ArmorType.PLATE);
 
@@ -45,7 +49,7 @@ class MageTest {
     @Test
     public void test_equip_forWeapons() throws InvalidWeaponException {
 
-
+        /* Testing by attempting to equip a valid weapon */
         mage.equipItem(appretice_wand);
         Item expected_equipped_weapon = mage.heroEquipment.get(Slot.WEAPON);
 
@@ -64,6 +68,7 @@ class MageTest {
     @Test
     public void test_equip_forArmor() throws InvalidArmorException {
 
+        /* Testing by attempting to equip a valid piece of armor */
         mage.equipItem(linen_robe);
         Item expected_equipped_armor = mage.heroEquipment.get(Slot.BODY);
 
@@ -82,14 +87,16 @@ class MageTest {
     @Test
     public void test_damage() throws InvalidWeaponException, InvalidArmorException {
 
+        /* From the first part of damage() method, testing damage
+        with just the primary attribute through the given equation */
         double expected_damage = (1 + mage.getPrimary() / 100.0);
-
         double actual_damage = mage.damage();
 
         /*Assertion without weapon */
         Assertions.assertEquals(expected_damage, actual_damage);
 
 
+        /* equipping weapon and testing */
         mage.equipItem(appretice_wand);
         int weapon_damage = mage.heroEquipment.get(Slot.WEAPON).getWeaponDamage();
         double expected_with_weapon = expected_damage * weapon_damage;
@@ -98,7 +105,7 @@ class MageTest {
         /*Assertion with weapon */
         Assertions.assertEquals(expected_with_weapon, actual_with_weapon);
 
-
+        /* replacing weapon  and testing again */
         mage.levelUp(79); // using levelUp() to equip weapon of higher level
         double expected_afterLevelUp = (1 + mage.getPrimary() / 100.0);
         mage.equipItem(atiesh);
@@ -109,6 +116,7 @@ class MageTest {
         /*Assertion with replaced weapon */
         Assertions.assertEquals(expected_withReplacedWeapon, actual_withReplacedWeapon);
 
+        /* equipping piece of armor and testing */
         mage.equipItem(frostfire_kilt);
         double expected_afterEquippingArmor = (1 + mage.getPrimary() / 100.0) * weapon_damage_withReplacedWeapon;
         double actual_afterEquippingArmor = mage.damage();
@@ -121,6 +129,8 @@ class MageTest {
     @Test
     public void test_display() {
 
+        /* Forming a multiline string with
+        values given from the created object. */
         String expected_display = """
                     Hero name: Archmage Kadgar
                     Class: Mage
@@ -130,6 +140,9 @@ class MageTest {
                     Total Intelligence: 8
                     Damage: 1,080000""";
 
+
+        /* Forming a second multiline string with
+        values taken from respective fields */
         String actual_display = format("""
                     Hero name: %s
                     Class: %s
@@ -150,7 +163,7 @@ class MageTest {
     @Test
     void test_totalHeroAttributes() throws InvalidArmorException {
 
-
+        /* testing without any equipment */
         String expected_withNoEquipment = format("""
                       Strength: %d
                       Dexterity: %d
@@ -166,6 +179,7 @@ class MageTest {
         Assertions.assertEquals(expected_withNoEquipment, actual_withNoEquipment);
 
 
+        /* testing by equipping first piece of equipment */
         mage.equipItem(linen_robe);
         String expected_withOnePiece = format("""
                       Strength: %d
@@ -181,6 +195,7 @@ class MageTest {
         /* Assertion with one piece of equipment */
         Assertions.assertEquals(expected_withOnePiece, actual_withOnePiece);
 
+        /* testing by equipping a second piece of equipment */
         mage.equipItem(crown_of_eternal_winter);
         String expected_withTwoPieces = format("""
                       Strength: %d
@@ -196,6 +211,7 @@ class MageTest {
         Assertions.assertEquals(expected_withTwoPieces, actual_withTwoPieces);
 
 
+        /* testing by replacing previous piece of equipment */
         mage.equipItem(common_headband);
         String expected_withReplacedPiece = format("""
                       Strength: %d
@@ -216,6 +232,11 @@ class MageTest {
     /* Testing levelUP() */
     @Test
     public void test_levelUP(){
+
+        /* Testing in a similar way with Setter methods of HeroAttributesTest.
+        Getting the original value from getter to expected, adding (or subtracting)
+        n to original value , adding (or subtracting) n to expected_afterLevelUp and multiplying it
+        by the amount define by attributesPerLevel Array for each class. */
 
         int expectedStrength= mage.levelAttributes.getStrength();
         int expectedDexterity = mage.levelAttributes.getDexterity();
@@ -248,6 +269,7 @@ class MageTest {
 
 /* Getters and Setters Testing */
 
+    /* Testing getHeroName() */
     @Test
     public void test_GetHeroName(){
 
@@ -256,6 +278,7 @@ class MageTest {
         Assertions.assertEquals(expected, actual);
     }
 
+    /* Testing getHeroClassName() */
     @Test
     public void test_GetHeroClassName() {
 
@@ -265,6 +288,7 @@ class MageTest {
 
     }
 
+    /* Testing getHeroLevel() */
     @Test
     public void test_GetHeroLevel() {
 
@@ -273,6 +297,7 @@ class MageTest {
         Assertions.assertEquals(expected, actual);
     }
 
+    /* Testing increaseHeroLevel() */
     @Test
     public void test_IncreaseHeroLevel() {
 
@@ -284,15 +309,19 @@ class MageTest {
         Assertions.assertEquals(expected2, actual);
     }
 
+    /* Testing getHeroEquipment() */
     @Test
     public void test_GetHeroEquipment() throws InvalidWeaponException, InvalidArmorException {
 
+        /* First test with empty equipment */
         HashMap<Slot, Item> expected_equipment = mage.heroEquipment;
         HashMap<Slot, Item> actual_equipment = mage.getHeroEquipment();
 
         Assertions.assertEquals(expected_equipment, actual_equipment);
 
 
+        /* Second test with full set of valid equipment
+        with created Armor and Weapon objects*/
         HashMap<Slot, Item> expected_equipment_afterEquipping = new HashMap<>();
         expected_equipment_afterEquipping.put(Slot.HEAD,crown_of_eternal_winter);
         expected_equipment_afterEquipping.put(Slot.BODY,linen_robe);
@@ -310,6 +339,7 @@ class MageTest {
 
     }
 
+    /* Testing getValidArmor() */
     @Test
     public void test_GetValidArmor() {
 
@@ -319,6 +349,7 @@ class MageTest {
         Assertions.assertEquals(armorType_expected, armorType_actual);
     }
 
+    /* Testing getValidWeapon() */
     @Test
     public void test_GetValidWeapon() {
 
@@ -327,6 +358,8 @@ class MageTest {
 
         Assertions.assertEquals(weaponTypes_expected, weaponTypes_actual);
     }
+
+    /* Testing getLevelAttributes() */
     @Test
     public void test_GetLevelAttributes() {
 
@@ -336,6 +369,7 @@ class MageTest {
         Assertions.assertEquals(heroAttributes_expected, heroAttributes_actual);
     }
 
+    /* Testing getPrimary() */
     @Test
     public void test_GetPrimary() {
 

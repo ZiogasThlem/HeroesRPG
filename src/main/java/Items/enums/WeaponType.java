@@ -1,4 +1,4 @@
-package Items;
+package Items.enums;
 
 public enum WeaponType {
 
