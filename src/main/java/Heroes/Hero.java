@@ -217,7 +217,7 @@ public abstract class Hero {
                         Total Strength: %d
                         Total Dexterity: %d
                         Total Intelligence: %d
-                        Damage %f""", heroName,
+                        Damage: %f""", heroName,
                 className, heroLevel, levelAttributes.getStrength(), levelAttributes.getDexterity(),
                 levelAttributes.getIntelligence(), damage());
 
